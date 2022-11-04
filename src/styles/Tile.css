@@ -1,0 +1,30 @@
+.tile {
+  height: 1.9em;
+  width: 2.2em;
+  border: 1px solid grey;
+  background-color: black;
+}
+
+.I {
+  background-color: white;
+}
+
+.O {
+  background-color: red;
+}
+
+.J {
+  background-color: blue;
+}
+
+.L {
+  background-color: green;
+}
+
+.S {
+  background-color: yellow;
+}
+
+.Z {
+  background-color: purple;
+}
