@@ -1,0 +1,16 @@
+.tile {
+  height: 1.9em;
+  width: 2.2em;
+  border: 1px solid grey;
+  background-color: black;
+}
+
+.I {
+  background-color: white;
+  opacity: 1;
+}
+
+.O {
+  background-color: red;
+  opacity: 1;
+}

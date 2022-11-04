@@ -1,0 +1,10 @@
+.board {
+  border: 1px solid red;
+  opacity: 0.75;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
