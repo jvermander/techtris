@@ -21,13 +21,25 @@ export const Tetris = {
   T_TILE: 'T' as tile,
   EMPTY_TILE: '_' as tile,
 
+  O_PIVOT_IDX: 0,
+  O_NUM_ROTATIONS: 1,
+
   I_PIVOT_IDX: 2,
   I_NUM_ROTATIONS: 2,
+
+  L_PIVOT_IDX: 2,
+  L_NUM_ROTATIONS: 4,
 
   J_PIVOT_IDX: 1,
   J_NUM_ROTATIONS: 4,
 
-  L_PIVOT_IDX: 2,
-  L_NUM_ROTATIONS: 4
+  S_PIVOT_IDX: 2,
+  S_NUM_ROTATIONS: 2,
+
+  Z_PIVOT_IDX: 1,
+  Z_NUM_ROTATIONS: 2,
+
+  T_PIVOT_IDX: 1,
+  T_NUM_ROTATIONS: 4,
 
 };
