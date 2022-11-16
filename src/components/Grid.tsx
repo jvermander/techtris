@@ -28,6 +28,10 @@ function Grid() {
       return;
     console.log(`Now on level ${level}`);
   }, [level])
+
+  useEffect(() => {
+    console.log(grid);
+  }, [grid])
   
   return(
     <>
