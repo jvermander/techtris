@@ -34,7 +34,7 @@ const FallingTetro: React.FC<props> = ({ gr, level }) => {
     setLastPosition([]);
     setType(randomType);    
     setRotationIdx(0);
-    setTime(0);
+    setTime(time ? 0 : -1); // must still force a state change if this tetro is spawning at time = 0
   };
 
   const getRandomType = () => {
@@ -77,14 +77,14 @@ const FallingTetro: React.FC<props> = ({ gr, level }) => {
 
   const onRotate = (step: number) => {
     switch(type) {
-      case 'O': return;
-      case 'I': rotate(Tetris.I_PIVOT_IDX, Tetris.I_NUM_ROTATIONS, step); break;
-      case 'L': rotate(Tetris.L_PIVOT_IDX, Tetris.L_NUM_ROTATIONS, step); break;
-      case 'J': rotate(Tetris.J_PIVOT_IDX, Tetris.J_NUM_ROTATIONS, step); break;
-      case 'S': rotate(Tetris.S_PIVOT_IDX, Tetris.S_NUM_ROTATIONS, step); break;
-      case 'Z': rotate(Tetris.Z_PIVOT_IDX, Tetris.Z_NUM_ROTATIONS, step); break;
-      case 'T': rotate(Tetris.T_PIVOT_IDX, Tetris.T_NUM_ROTATIONS, step); break; 
-      default: return;
+      case 'O': return true;
+      case 'I': return rotate(Tetris.I_PIVOT_IDX, Tetris.I_NUM_ROTATIONS, step);
+      case 'L': return rotate(Tetris.L_PIVOT_IDX, Tetris.L_NUM_ROTATIONS, step);
+      case 'J': return rotate(Tetris.J_PIVOT_IDX, Tetris.J_NUM_ROTATIONS, step);
+      case 'S': return rotate(Tetris.S_PIVOT_IDX, Tetris.S_NUM_ROTATIONS, step);
+      case 'Z': return rotate(Tetris.Z_PIVOT_IDX, Tetris.Z_NUM_ROTATIONS, step);
+      case 'T': return rotate(Tetris.T_PIVOT_IDX, Tetris.T_NUM_ROTATIONS, step);
+      default: return false;
     }
   }
 
@@ -95,12 +95,13 @@ const FallingTetro: React.FC<props> = ({ gr, level }) => {
     var i = 0;
     for(const p of update) {
       if(i !== pivotIdx && isCollision(p, grid, position))
-        return;
+        return false;
       i++;
     }
 
     setRotationIdx(newRotationIdx);
     updatePosition(update);
+    return true;
   }
 
   useEffect(() => {
@@ -110,6 +111,7 @@ const FallingTetro: React.FC<props> = ({ gr, level }) => {
   }, [level])
 
   useEffect(() => {
+    console.log('Time', time);
     if(time === null)
       return;
 
