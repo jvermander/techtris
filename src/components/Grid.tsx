@@ -11,10 +11,10 @@ const initGrid = () => {
     grid[i] = new Array<tile>(Tetris.COLS).fill('_'); 
   }
 
-  grid[7][3] = 'O';
-  grid[10][9] = 'O';
-  grid[17][5] = 'O';
-  grid[17][3] = 'O';
+  // grid[7][3] = 'O';
+  // grid[10][9] = 'O';
+  // grid[17][5] = 'O';
+  // grid[17][3] = 'O';
 
   return grid;
 }

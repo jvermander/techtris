@@ -1,8 +1,12 @@
 import { coord, tile, Tetris } from 'Tetris';
 
-// Returns true if a given coordinate already belongs to another tile in the grid,
-// provided the tile does not belong to the falling tetromino; false otherwise.
-// Can specify null in place of position if it is already known that the checked coord is not in the falling tetromino.
+/*
+  Returns true if a given coordinate already belongs to another tile in the grid.
+  If the coordinate already belongs to another tile, but is in the falling tetro's position,
+  then this is not considered a collision and we return false (a tetro cannot collide with itself).
+
+  Can optionally skip the above check by providing null in place of the position.
+*/
 export const isCollision = (toCheck: coord, grid: tile[][], position: coord[] | null) => {
   if(toCheck.y < 0 || toCheck.y >= Tetris.ACTUAL_ROWS || toCheck.x < 0 || toCheck.x >= Tetris.COLS)
     return true;

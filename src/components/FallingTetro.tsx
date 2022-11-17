@@ -77,14 +77,14 @@ const FallingTetro: React.FC<props> = ({ gr, level }) => {
 
   const onRotate = (step: number) => {
     switch(type) {
-      case 'O': return;
-      case 'I': rotate(Tetris.I_PIVOT_IDX, Tetris.I_NUM_ROTATIONS, step); break;
-      case 'L': rotate(Tetris.L_PIVOT_IDX, Tetris.L_NUM_ROTATIONS, step); break;
-      case 'J': rotate(Tetris.J_PIVOT_IDX, Tetris.J_NUM_ROTATIONS, step); break;
-      case 'S': rotate(Tetris.S_PIVOT_IDX, Tetris.S_NUM_ROTATIONS, step); break;
-      case 'Z': rotate(Tetris.Z_PIVOT_IDX, Tetris.Z_NUM_ROTATIONS, step); break;
-      case 'T': rotate(Tetris.T_PIVOT_IDX, Tetris.T_NUM_ROTATIONS, step); break; 
-      default: return;
+      case 'O': return true;
+      case 'I': return rotate(Tetris.I_PIVOT_IDX, Tetris.I_NUM_ROTATIONS, step);
+      case 'L': return rotate(Tetris.L_PIVOT_IDX, Tetris.L_NUM_ROTATIONS, step);
+      case 'J': return rotate(Tetris.J_PIVOT_IDX, Tetris.J_NUM_ROTATIONS, step);
+      case 'S': return rotate(Tetris.S_PIVOT_IDX, Tetris.S_NUM_ROTATIONS, step);
+      case 'Z': return rotate(Tetris.Z_PIVOT_IDX, Tetris.Z_NUM_ROTATIONS, step);
+      case 'T': return rotate(Tetris.T_PIVOT_IDX, Tetris.T_NUM_ROTATIONS, step);
+      default: return false;
     }
   }
 
@@ -95,12 +95,13 @@ const FallingTetro: React.FC<props> = ({ gr, level }) => {
     var i = 0;
     for(const p of update) {
       if(i !== pivotIdx && isCollision(p, grid, position))
-        return;
+        return false;
       i++;
     }
 
     setRotationIdx(newRotationIdx);
     updatePosition(update);
+    return true;
   }
 
   useEffect(() => {
@@ -110,21 +111,16 @@ const FallingTetro: React.FC<props> = ({ gr, level }) => {
   }, [level])
 
   useEffect(() => {
-    console.log('Time', time);
     if(time === null)
       return;
 
     setTimeout(() => {
-      // console.log('Time passes by...');
-      // console.log('Time sees:', posRef.current);
-      // setTime(time + gravity);
-
       var success = onTranslate(0, 1, posRef.current); // position variable is stale here, must supply a reference
       if(success) {
         setTime(time + gravity);
       } else { // tetro hit the ground, spawn another
         spawnTetro(); 
-        console.log('Collision occurred');
+        console.log('Tetro completed its fall.');
       }
     }, gravity);
   }, [time])
@@ -144,8 +140,8 @@ const FallingTetro: React.FC<props> = ({ gr, level }) => {
         case 'ArrowDown': onTranslate(0, 1); break;
         case 'ArrowLeft': onTranslate(-1, 0); break;
         case 'ArrowRight': onTranslate(1, 0); break;
-        case 'z': onRotate(-1); break;
-        case 'x': onRotate(1); break;
+        case 'z': onRotate(1); break;
+        case 'x': onRotate(-1); break;
       }
     }
   }, [onTranslate, onRotate])
