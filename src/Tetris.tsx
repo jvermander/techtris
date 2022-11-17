@@ -8,7 +8,8 @@ export const Tetris = {
   DISPLAY_ROWS: 20,
   ACTUAL_ROWS: 23,
   COLS: 10,
-  TETROMINO_SIZE: 4,
+  NUM_TETROS: 7,
+  TETRO_SIZE: 4,
   SPAWN_COL: 5,
   SPAWN_ROW: 3,
 
@@ -43,3 +44,14 @@ export const Tetris = {
   T_NUM_ROTATIONS: 4,
 
 };
+
+// for randomization
+export const roulette = [ 
+  Tetris.I_TILE, 
+  Tetris.J_TILE,
+  Tetris.L_TILE,
+  Tetris.O_TILE,
+  Tetris.S_TILE,
+  Tetris.T_TILE,
+  Tetris.Z_TILE
+];
