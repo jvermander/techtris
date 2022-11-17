@@ -13,7 +13,6 @@ export const getRotation = (type: tile, p: coord, i: number) => {
   }
 }
 
-// no rotation
 const getORotation = (p: coord, i: number) => {
   return [
     { x: p.x - 1, y: p.y },
@@ -23,7 +22,6 @@ const getORotation = (p: coord, i: number) => {
   ];
 }
 
-// I rotates around position[2]
 const getIRotation = (p: coord, i: number) => {
   switch(i) {
     case 0:
@@ -45,7 +43,6 @@ const getIRotation = (p: coord, i: number) => {
   }
 };
 
-// L rotates around position[2]
 const getLRotation = (p: coord, i: number) => {
   switch(i) {
     case 0:
@@ -81,7 +78,6 @@ const getLRotation = (p: coord, i: number) => {
   }
 }
 
-// J rotates around position[1]
 const getJRotation = (p: coord, i: number) => {
   switch(i) {
     case 0:
@@ -117,7 +113,6 @@ const getJRotation = (p: coord, i: number) => {
   }
 }
 
-// rotates about position[2]
 const getSRotation = (p: coord, i: number) => {
   switch(i) {
     case 0: 
@@ -134,11 +129,11 @@ const getSRotation = (p: coord, i: number) => {
         { ...p },
         { x: p.x, y: p.y - 1 }
       ]
-    default: return [];
+    default: 
+      return [];
   }
 }
 
-// rotates about position[1]
 const getZRotation = (p: coord, i: number) => {
   switch(i) {
     case 0:
@@ -155,11 +150,11 @@ const getZRotation = (p: coord, i: number) => {
         { x: p.x - 1, y: p.y },
         { x: p.x - 1, y: p.y + 1}
       ];
-    default: return [];
+    default: 
+      return [];
   }
 }
 
-// rotates about position[1]
 const getTRotation = (p: coord, i: number) => {
   switch(i) {
     case 0:
@@ -190,6 +185,7 @@ const getTRotation = (p: coord, i: number) => {
         { x: p.x + 1, y: p.y },
         { x: p.x, y: p.y - 1}
       ];
-    default: return [];
+    default: 
+      return [];
   }
 }
