@@ -30,7 +30,7 @@ function Grid() {
   }, [level])
 
   useEffect(() => {
-    console.log(JSON.stringify(grid));
+    // console.log(JSON.stringify(grid));
   }, [grid])
   
   return(

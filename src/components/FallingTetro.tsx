@@ -34,7 +34,7 @@ const FallingTetro: React.FC<props> = ({ gr, level }) => {
     setLastPosition([]);
     setType(randomType);    
     setRotationIdx(0);
-    setTime(0);
+    setTime(time ? 0 : -1); // must still force a state change if this tetro is spawning at time = 0
   };
 
   const getRandomType = () => {
@@ -110,6 +110,7 @@ const FallingTetro: React.FC<props> = ({ gr, level }) => {
   }, [level])
 
   useEffect(() => {
+    console.log('Time', time);
     if(time === null)
       return;
 
