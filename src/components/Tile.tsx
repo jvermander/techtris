@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Tetris, tile } from 'Tetris';
+import { TileType } from 'data/types';
 import 'styles/Tile.css';
 
 type props = {
-  value: tile;
+  type: TileType;
 }
 
-const Tile: React.FC<props> = ({ value }) => {
+const Tile: React.FC<props> = ({ type }) => {
 
   return (
-    <div className={`tile ${value}`}>
+    <div className={`tile ${type}`}>
     </div>
   )
 

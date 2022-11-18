@@ -1,8 +1,4 @@
-export type tile = 'I' | 'O' | 'J' | 'L' | 'S' | 'Z' | 'T' | '_';
-export type coord = {
-  x: number, 
-  y: number
-};
+import { TileType } from "./types";
 
 export const Tetris = {
   DISPLAY_ROWS: 20,
@@ -13,14 +9,14 @@ export const Tetris = {
   SPAWN_COL: 5,
   SPAWN_ROW: 3,
 
-  I_TILE: 'I' as tile,
-  O_TILE: 'O' as tile,
-  J_TILE: 'J' as tile,
-  L_TILE: 'L' as tile,
-  S_TILE: 'S' as tile,
-  Z_TILE: 'Z' as tile,
-  T_TILE: 'T' as tile,
-  EMPTY_TILE: '_' as tile,
+  I_TILE: 'I' as TileType,
+  O_TILE: 'O' as TileType,
+  J_TILE: 'J' as TileType,
+  L_TILE: 'L' as TileType,
+  S_TILE: 'S' as TileType,
+  Z_TILE: 'Z' as TileType,
+  T_TILE: 'T' as TileType,
+  EMPTY_TILE: '_' as TileType,
 
   O_PIVOT_IDX: 0,
   O_NUM_ROTATIONS: 1,
