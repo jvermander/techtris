@@ -1,39 +1,44 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Tetris, roulette, tile, coord } from 'Tetris';
+import { Tetris, roulette } from 'data/Tetris';
+import { TileType, Coordinate, GameStage } from 'data/types';
 import { isCollision, findYCollisionDist, getRotation } from 'functional';
 import Assert from 'assert-js';
 
 type props = {
-  gr: [tile[][], React.Dispatch<React.SetStateAction<tile[][]>>],
-  level: number
+  gr: [TileType[][], React.Dispatch<React.SetStateAction<TileType[][]>>],
+  st: [GameStage, React.Dispatch<React.SetStateAction<GameStage>>]
+  level: number,
 }
 
-const FallingTetro: React.FC<props> = ({ gr, level }) => {
+const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
   const [grid, setGrid] = gr;
+  const [stage, setStage] = st;
 
   // state describing the current tetromino
-  const [position, setPosition] = useState<coord[]>([]);
-  const [lastPosition, setLastPosition] = useState<coord[]>([]); // required for erasing from the grid
-  const [type, setType] = useState<tile>(Tetris.EMPTY_TILE);
+  const [position, setPosition] = useState<Coordinate[]>([]);
+  const [lastPosition, setLastPosition] = useState<Coordinate[]>([]); // required for erasing from the grid
+  const [type, setType] = useState<TileType>(Tetris.EMPTY_TILE);
   const [rotationIdx, setRotationIdx] = useState<number>(0);
-  const posRef = useRef<coord[]>();
+  const posRef = useRef<Coordinate[]>();
   posRef.current = position;
 
   // state for periodically updating the display
-  const [time, setTime] = useState<number | null>(null);
+  const [time, setTime] = useState<number>(-1);
   const [gravity, setGravity] = useState<number>(1000);
   const [spawnPending, setSpawnPending] = useState<boolean>(false);
-  const timeRef = useRef<number | null>();
+  const timeRef = useRef<number>();
   const pendingRef = useRef<boolean>();
   timeRef.current = time;
   pendingRef.current = spawnPending;
   
-  const updatePosition = (update: coord[], current: (coord[] | null) = null) => {
+  const updatePosition = (update: Coordinate[], current: (Coordinate[] | null) = null): void => {
     setLastPosition(current ?? position);
     setPosition(update);
   }
 
-  const spawnTetro = () => {
+  const spawnTetro = (): void => {
+    if(stage != 'play')
+      return;
     var randomType = getRandomType();
 
     const init = getRotation(randomType, { x: Tetris.SPAWN_COL, y: Tetris.SPAWN_ROW }, 0);
@@ -41,14 +46,27 @@ const FallingTetro: React.FC<props> = ({ gr, level }) => {
     setLastPosition([]);
     setType(randomType);    
     setRotationIdx(0);
-    setTime(time ? 0 : -1); // must still force a state change if this tetro is spawning at time = 0
+    setTime(new Date().getTime());
+
+    if(isSpawnBlocked(init)) {
+      console.log('Game over!');
+      setStage('game_over');
+    }
   };
 
-  const getRandomType = () => {
+  const isSpawnBlocked = (position: Coordinate[]): boolean => {
+    for(const p of position) {
+      if(isCollision(p, grid, null))
+        return true;
+    }
+    return false;
+  }
+
+  const getRandomType = (): TileType => {
     return roulette[Math.floor(Math.random() * Tetris.NUM_TETROS)];
   }
 
-  const updateGrid = () => {
+  const updateGrid = (): void => {
     var update = [...grid];
     if(lastPosition.length > 0) {
       for(const p of lastPosition) {
@@ -56,7 +74,7 @@ const FallingTetro: React.FC<props> = ({ gr, level }) => {
       }
     }
     for(const p of position) {
-      update[p.y][p.x] = type as tile;
+      update[p.y][p.x] = type as TileType;
     }
     setGrid(update);
   }
@@ -68,10 +86,10 @@ const FallingTetro: React.FC<props> = ({ gr, level }) => {
     An optional current position can be supplied if the caller believes it has a 
     more recent version of position (e.g. in timeout functions).
   */
-  const onTranslate = (x_step: number, y_step: number, current: (coord[] | null) = null) => {
-    var update = new Array<coord>();
+  const onTranslate = (x_step: number, y_step: number, current: (Coordinate[] | null) = null): boolean => {
+    var update = new Array<Coordinate>();
     for(const p of current ?? position) {
-      var newCoord: coord = { x: p.x + x_step, y: p.y + y_step };
+      var newCoord: Coordinate = { x: p.x + x_step, y: p.y + y_step };
       if(!isCollision(newCoord, grid, current ?? position)) {
         update.push(newCoord);
       } else {
@@ -82,7 +100,7 @@ const FallingTetro: React.FC<props> = ({ gr, level }) => {
     return true;
   }
 
-  const onRotate = (step: number) => {
+  const onRotate = (step: number): boolean => {
     switch(type) {
       case 'O': return true;
       case 'I': return rotate(Tetris.I_PIVOT_IDX, Tetris.I_NUM_ROTATIONS, step);
@@ -95,7 +113,7 @@ const FallingTetro: React.FC<props> = ({ gr, level }) => {
     }
   }
 
-  const rotate = (pivotIdx: number, numRotations: number, step: number) => {
+  const rotate = (pivotIdx: number, numRotations: number, step: number): boolean => {
     const pivot = position[pivotIdx];
     const newRotationIdx = (rotationIdx + step + numRotations) % numRotations; 
     const update = getRotation(type, pivot, newRotationIdx);
@@ -111,21 +129,19 @@ const FallingTetro: React.FC<props> = ({ gr, level }) => {
     return true;
   }
 
-  const onDrop = () => {
+  const onDrop = (): void => {
     var fallDist = findYCollisionDist(grid, position);
     onTranslate(0, fallDist);
     setSpawnPending(true);
-    console.log('Player spawned a tetro.');
   }
 
   useEffect(() => {
-    if(!level)
-      return;
-    spawnTetro();
-  }, [level])
+    if(stage == 'play')
+      spawnTetro();
+  }, [stage])
 
   useEffect(() => {
-    if(time === null)
+    if(stage != 'play')
       return;
 
     setTimeout(() => {
@@ -134,20 +150,18 @@ const FallingTetro: React.FC<props> = ({ gr, level }) => {
       // 2) or the time variable will be stale (spawn has already occurred)
       if(pendingRef.current || timeRef.current != time)
         return; // quit in either case
-      
 
       var success = onTranslate(0, 1, posRef.current); // position variable is stale here, must supply a reference
       if(success) {
         setTime(time + gravity);
       } else { // tetro hit the ground, spawn another
-        spawnTetro(); 
-        console.log('Tetro completed its fall.');
+        spawnTetro();
       }
     }, gravity);
   }, [time])
 
   useEffect(() => {
-    if(position.length === 0 || type === Tetris.EMPTY_TILE)
+    if(stage == 'setup')
       return;
     updateGrid();
     if(spawnPending) {
@@ -159,9 +173,8 @@ const FallingTetro: React.FC<props> = ({ gr, level }) => {
 
   useEffect(() => {
     document.onkeydown = (e) => {
-      if(position.length <= 0)
+      if(stage != 'play' || spawnPending)
         return;
-      console.log(e.key);
       switch(e.key) {
         case 'ArrowUp': onTranslate(0, -1); break; // for debugging
         case 'ArrowDown': onTranslate(0, 1); break;
@@ -173,7 +186,7 @@ const FallingTetro: React.FC<props> = ({ gr, level }) => {
         default: return;
       }
     }
-  }, [onTranslate, onRotate])
+  }, [onTranslate, onRotate, spawnPending])
 
   return (
     <div>

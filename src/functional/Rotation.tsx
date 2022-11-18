@@ -1,6 +1,6 @@
-import { coord, tile } from 'Tetris';
+import { TileType, Coordinate } from 'data/types';
 
-export const getRotation = (type: tile, p: coord, i: number) => {
+export const getRotation = (type: TileType, p: Coordinate, i: number) => {
   switch(type) {
     case 'O': return getORotation(p, i);
     case 'I': return getIRotation(p, i);
@@ -13,7 +13,7 @@ export const getRotation = (type: tile, p: coord, i: number) => {
   }
 }
 
-const getORotation = (p: coord, i: number) => {
+const getORotation = (p: Coordinate, i: number) => {
   return [
     { x: p.x - 1, y: p.y },
     { ...p },
@@ -22,7 +22,7 @@ const getORotation = (p: coord, i: number) => {
   ];
 }
 
-const getIRotation = (p: coord, i: number) => {
+const getIRotation = (p: Coordinate, i: number) => {
   switch(i) {
     case 0:
       return [
@@ -43,7 +43,7 @@ const getIRotation = (p: coord, i: number) => {
   }
 };
 
-const getLRotation = (p: coord, i: number) => {
+const getLRotation = (p: Coordinate, i: number) => {
   switch(i) {
     case 0:
       return [
@@ -78,7 +78,7 @@ const getLRotation = (p: coord, i: number) => {
   }
 }
 
-const getJRotation = (p: coord, i: number) => {
+const getJRotation = (p: Coordinate, i: number) => {
   switch(i) {
     case 0:
       return [
@@ -113,7 +113,7 @@ const getJRotation = (p: coord, i: number) => {
   }
 }
 
-const getSRotation = (p: coord, i: number) => {
+const getSRotation = (p: Coordinate, i: number) => {
   switch(i) {
     case 0: 
       return [
@@ -134,7 +134,7 @@ const getSRotation = (p: coord, i: number) => {
   }
 }
 
-const getZRotation = (p: coord, i: number) => {
+const getZRotation = (p: Coordinate, i: number) => {
   switch(i) {
     case 0:
       return [
@@ -155,7 +155,7 @@ const getZRotation = (p: coord, i: number) => {
   }
 }
 
-const getTRotation = (p: coord, i: number) => {
+const getTRotation = (p: Coordinate, i: number) => {
   switch(i) {
     case 0:
       return [
