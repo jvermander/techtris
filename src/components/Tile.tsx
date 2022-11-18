@@ -9,8 +9,7 @@ type props = {
 const Tile: React.FC<props> = ({ type }) => {
 
   return (
-    <div className={`tile ${type}`}>
-    </div>
+    <div className={`tile ${type}`} />
   )
 
 }

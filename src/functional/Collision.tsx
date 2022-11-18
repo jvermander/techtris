@@ -26,16 +26,7 @@ export const isCollision = (toCheck: Coordinate, grid: TileType[][], position: C
   collision is encountered for a given tetromino position.
 */
 export const findYCollisionDist = (grid: TileType[][], position: Coordinate[]): number => {
-  var candidates = new Array<Coordinate>(); // first find all points in the position which are candidates for vertical collision
-  for(const p of position) {
-    var idx = candidates.findIndex((c) => c.x === p.x && c.y != p.y);
-    if(idx != -1 && candidates[idx].y < p.y) {
-      candidates.splice(idx, 1);
-      candidates.push(p);
-    } else if(idx == -1) {
-      candidates.push(p);
-    }
-  }
+  var candidates = findDistinct('x', position); // first find all points in the position which are candidates for vertical collision
 
   var collisions = new Array<Coordinate>();
   for(const c of candidates) { // for each candidate, search down its column for a non-empty tile
@@ -53,4 +44,58 @@ export const findYCollisionDist = (grid: TileType[][], position: Coordinate[]): 
       shortest = dist; 
   }
   return shortest - 1;
+}
+
+/*
+  Along the provided axis Z and a given position P,
+  return all coordinates in P that have a distinct Z value.
+
+  If two coordinates have the same Z value, 
+  include the one with the greater value on the other axis.
+*/
+const findDistinct = (axis: 'x' | 'y', position: Coordinate[]): Coordinate[] => {
+  var candidates = new Array<Coordinate>();
+  for(const p of position) {
+    var idx = candidates.findIndex((c) => { // find duplicates
+      return axis === 'x' ? 
+        c.x === p.x && c.y != p.y :
+        c.y === p.y && c.x != p.x
+    });
+    if(idx != -1 && 
+      ((axis === 'x' && candidates[idx].y < p.y) || 
+      (axis === 'y' && candidates[idx].x < p.x))) { // discard duplicates
+      candidates.splice(idx, 1);
+      candidates.push(p);
+    } else if(idx == -1) {
+      candidates.push(p);
+    }
+  }
+  return candidates;
+}
+
+/*
+  Returns an array of row numbers that are made complete by the given position.
+  This array is sorted in decreasing order to enable easy splices on the whole grid.
+*/
+export const findCompleteRows = (grid: TileType[][], position: Coordinate[]): number[] => {
+  var complete = new Array<number>();
+  var candidates = findDistinct('y', position);
+  for(const c of candidates) {
+    var x = 0;
+    while(x < Tetris.COLS && grid[c.y][x] !== Tetris.EMPTY_TILE) {
+      x++;
+    }
+    // sorted insertion
+    if(x === Tetris.COLS) {
+      var i = 0;
+      while(i < complete.length && complete[i] >= c.y) {
+        i++;
+      }
+      if(i === complete.length)
+        complete.push(c.y);
+      else
+        complete.splice(i, 0, c.y);
+    }
+  }
+  return complete;
 }
