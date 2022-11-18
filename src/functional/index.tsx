@@ -1,4 +1,4 @@
-import { isCollision, findYCollisionDist } from "./Collision";
+import { isCollision, findYCollisionDist, findCompleteRows } from "./Collision";
 import { getRotation } from "./Rotation";
 
-export { isCollision, findYCollisionDist, getRotation };
+export { isCollision, findYCollisionDist, findCompleteRows, getRotation };
