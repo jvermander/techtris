@@ -1,8 +1,16 @@
 .tile {
   height: 1.9em;
   width: 2.2em;
-  border: 1px solid grey;
   background-color: black;
+}
+
+.I, .O, .J, .L, .S, .Z, .T {
+  /* animation style: */
+  /* background-color: transparent !important; */
+  /* border: 1px solid white; */
+
+  border: 1px solid black;
+  border-radius: 2px;
 }
 
 .I {
