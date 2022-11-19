@@ -38,6 +38,8 @@ export const Tetris = {
 
   T_PIVOT_IDX: 1,
   T_NUM_ROTATIONS: 4,
+
+  TETRIS_DURATION: 250
 };
 
 // for randomization

@@ -23,11 +23,15 @@ const initGrid = (development: boolean = false) => {
 }
 
 function Grid() {
-  const [grid, setGrid] = useState<TileType[][]>(initGrid(true));
+  const [grid, setGrid] = useState<TileType[][]>(initGrid());
   const [level, setLevel] = useState<number>(0);
   const [stage, setStage] = useState<GameStage>('setup');
 
   const [toDestroy, setToDestroy] = useState<number[]>([]);
+
+  useEffect(() => {
+    document.documentElement.style.setProperty('--tetris-duration', `${Tetris.TETRIS_DURATION}ms`);
+  }, [])
 
   /*
     Update each coordinate in the given set with a particular type, and
@@ -58,7 +62,12 @@ function Grid() {
   useEffect(() => {
     if(!toDestroy.length)
       return;
-    concludeDestroy();
+    
+    // Take a moment to animate a tetris
+    var delay = toDestroy.length === 4 ? Tetris.TETRIS_DURATION : 0;
+    setTimeout(() => {
+      concludeDestroy();
+    }, delay);
   }, [toDestroy])
 
   const concludeDestroy = (): void => {
@@ -102,7 +111,13 @@ function Grid() {
             <div key={`k${i}`} className='row'>
               {row.map((sq, j) => {
                 return (
-                  <Tile key={`k${i}${j}`} type={grid[i][j]} magnitude={toDestroy.includes(i) ? toDestroy.length : 0}/>
+                  <Tile 
+                    key={`k${i}${j}`} 
+                    id={`${i}${j}`} 
+                    type={grid[i][j]}
+                    magnitude={toDestroy.includes(i) ? toDestroy.length : 0}
+                    tetris={toDestroy.length === 4}
+                  />
                   );
                 })}
             </div> : null

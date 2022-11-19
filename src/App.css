@@ -22,7 +22,9 @@ body {
 :root {
   --tileHeight: 1.9em;
   --tileWidth: 2.2em;
-  --distY: 200px;
-  --distX: 400px; 
-  --duration: 1000;
+  --spin: 0deg;
+  --distY: 20px;
+  --distX: 40px; 
+  --kaboom-duration: 1000;
+  --tetris-duration: 1000;
 }

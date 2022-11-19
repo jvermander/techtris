@@ -13,11 +13,63 @@
   border-radius: 2px;
 }
 
+.I.tetris, 
+.O.tetris, 
+.J.tetris, 
+.L.tetris, 
+.S.tetris,
+.Z.tetris,
+.T.tetris {
+  animation: tetris;
+  border-color: white;
+  animation-duration: var(--tetris-duration);
+  /* animation-iteration-count: infinite; */
+  /* background-color: transparent !important; */
+  /* border: 1px solid white !important; */
+}
+
+._.tetris {
+  animation: tetrisEmpty;
+  animation-duration: var(--tetris-duration);
+}
+
+@keyframes tetris {
+  50% {
+    background-color: white;
+    border-color: white;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+@keyframes tetrisEmpty {
+  50% {
+    background-color: black;
+  }
+}
+
+.I.tetris-mode, 
+.O.tetris-mode, 
+.J.tetris-mode, 
+.L.tetris-mode, 
+.S.tetris-mode,
+.Z.tetris-mode,
+.T.tetris-mode  {
+  transition: background-color 1s ease-out;
+  border-color: white;
+  background-color: transparent;
+}
+
+.transition {
+  transition: background-color 0.25s ease-out; 
+}
+
 .kaboom {
   animation: kaboom;
   opacity: 0;
   animation-timing-function: ease-out;
-  animation-duration: var(--duration);
+  animation-duration: var(--kaboom-duration);
   background-color: white !important;
   border: 1px solid white;
   position: absolute;
@@ -26,10 +78,10 @@
 @keyframes kaboom {
   0% { 
     opacity: 1;
-    transform: translate(0px, 0px);
+    transform: rotate(0deg) translate(0px, 0px);
   } 
   100% {
-    transform: translate(var(--distX), var(--distY));
+    transform: rotate(var(--spin)) translate(var(--distX), var(--distY));
   }
 }
 

@@ -3,16 +3,19 @@ import { TileType } from 'data/types';
 import { Tetris } from 'data/Tetris';
 
 const Kaboom = {
-  DURATION: ['1000ms', '1000ms', '1000ms', '1500ms'],
-  MIN_X: [20, 40, 60, 80],
-  MAX_X: [60, 100, 140, 200],
-  MIN_Y: [20, 40, 60, 80],
-  MAX_Y: [40, 80, 120, 180]
+  DURATION: ['1000ms', '1000ms', '1500ms', '3000ms'],
+  MIN_X: [20, 40, 100, 80],
+  MAX_X: [60, 100, 150, 400],
+  MIN_Y: [20, 40, 100, 80],
+  MAX_Y: [40, 80, 150, 380],
+  MIN_SPIN: 180,
+  MAX_SPIN: 1080,
 }
 
 type props = {
   type: TileType;
   magnitude: number;
+  id: string;
 }
 
 /*
@@ -20,7 +23,7 @@ type props = {
    depending on what is requested by the grid.
    Proper care is taken to avoid memory leaks and excessive performance loss.
 */
-const TileAnimator: React.FC<props> = ({ type, magnitude }) => {
+const TileAnimator: React.FC<props> = ({ type, magnitude, id }) => {
   const [queue, setQueue] = useState<number[]>([0]);
   const [threads, setThreads] = useState<(JSX.Element | null)[]>([null]);
   const threadsRef = useRef<(JSX.Element | null)[]>(threads);
@@ -29,16 +32,20 @@ const TileAnimator: React.FC<props> = ({ type, magnitude }) => {
   queueRef.current = queue;
   
   useEffect(() => {
-    if(magnitude) {
-      if(queue.length > 0) { // available threads
-        allocate(queue[0], type, magnitude);
-        var update = [...queue];
+    if(!magnitude)
+      return;
+
+    var delay = magnitude === 4 ? Tetris.TETRIS_DURATION : 0; 
+    setTimeout(() => {
+      if(queueRef.current.length > 0) { // available threads
+        allocate(queueRef.current[0], type, magnitude);
+        var update = [...queueRef.current];
         update.splice(0, 1); // dequeue
         setQueue(update);
       } else { // all threads busy, must allocate another
-        allocate(threads.length, type, magnitude, true);
+        allocate(threadsRef.current.length, type, magnitude, true);
       }
-    }
+    }, delay);
   }, [magnitude])
 
   const deallocate = (i: number) => {
@@ -58,16 +65,24 @@ const TileAnimator: React.FC<props> = ({ type, magnitude }) => {
           style={{
             '--distX': getRandVelocity('x', magnitude),
             '--distY': getRandVelocity('y', magnitude),
-            '--duration': Kaboom.DURATION[magnitude - 1]
+            '--spin': magnitude === 4 ? getRandSpin() : '0deg',
+            '--kaboom-duration': Kaboom.DURATION[magnitude - 1]
           } as React.CSSProperties}
-          onAnimationEnd={(e) => deallocate(i)}
+          onAnimationEnd={(e) => { if(e.animationName == 'kaboom') deallocate(i)} }
         />
-    var update = [...threads];
+    var update = [...threadsRef.current];
     if(more)
       update.push(animation);
     else
       update[i] = animation;
     setThreads(update);
+  }
+
+  const getRandSpin = () => {
+    var min = Kaboom.MIN_SPIN;
+    var max = Kaboom.MAX_SPIN;
+    var spin = Math.floor(Math.random() * (max - min) + min) * -1;
+    return `${spin}deg`;
   }
 
   const getRandVelocity = (axis: 'x' | 'y', magnitude: number): string => {
@@ -82,8 +97,11 @@ const TileAnimator: React.FC<props> = ({ type, magnitude }) => {
   }
   
   useEffect(() => {
-    // if(magnitude)
-      // console.log('Threads:', threads);
+    if(threads.length > 1) {
+      console.log(id);
+      console.log('Threads:', threads);
+      console.log('Queue:', queue);
+    }
   }, [threads])
 
   return (
