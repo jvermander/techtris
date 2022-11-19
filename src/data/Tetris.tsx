@@ -38,7 +38,6 @@ export const Tetris = {
 
   T_PIVOT_IDX: 1,
   T_NUM_ROTATIONS: 4,
-
 };
 
 // for randomization

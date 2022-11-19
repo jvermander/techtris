@@ -12,4 +12,17 @@
   align-items: center;
   height: 100vh;
   width: 100vw;
+  overflow: hidden;
+}
+
+body {
+  overflow: hidden;
+}
+
+:root {
+  --tileHeight: 1.9em;
+  --tileWidth: 2.2em;
+  --distY: 200px;
+  --distX: 400px; 
+  --duration: 1000;
 }

@@ -6,25 +6,28 @@ import { Tile, FallingTetro } from 'components';
 import 'styles/Grid.css';
 
 
-const initGrid = () => {
+const initGrid = (development: boolean = false) => {
   var grid : TileType[][] = new Array<Array<TileType>>(Tetris.ACTUAL_ROWS);
 
   for(var i = 0; i < Tetris.ACTUAL_ROWS; i++) {
-    grid[i] = new Array<TileType>(Tetris.COLS).fill('_'); 
-  }
+    if(i > 6 && development) {
+      grid[i] = new Array<TileType>(Tetris.COLS).fill('O');
+      grid[i][Tetris.COLS - 1] = '_';
+    } else {
+      grid[i] = new Array<TileType>(Tetris.COLS).fill('_');
+    }
 
-  // grid[7][3] = 'O';
-  // grid[10][9] = 'O';
-  // grid[17][5] = 'O';
-  // grid[17][3] = 'O';
+  }
 
   return grid;
 }
 
 function Grid() {
-  const [grid, setGrid] = useState<TileType[][]>(initGrid());
+  const [grid, setGrid] = useState<TileType[][]>(initGrid(true));
   const [level, setLevel] = useState<number>(0);
   const [stage, setStage] = useState<GameStage>('setup');
+
+  const [toDestroy, setToDestroy] = useState<number[]>([]);
 
   /*
     Update each coordinate in the given set with a particular type, and
@@ -44,20 +47,31 @@ function Grid() {
     setGrid(update);
   }, [grid]);
 
-  const destroyRows = useCallback((position: Coordinate[]): number => {
+  const commenceDestroy = useCallback((position: Coordinate[]): number => {
     var complete = findCompleteRows(grid, position);
-    var replacement = new Array<Array<TileType>>(0);
     if(complete.length === 0)
       return 0;
+    setToDestroy(complete);
+    return complete.length;
+  }, [grid])
+
+  useEffect(() => {
+    if(!toDestroy.length)
+      return;
+    concludeDestroy();
+  }, [toDestroy])
+
+  const concludeDestroy = (): void => {
+    var replacement = new Array<Array<TileType>>(0);
     var update = [...grid];
-    for(const x of complete) {
+    for(const x of toDestroy) {
       update.splice(x, 1);
       replacement.push(new Array<TileType>(Tetris.COLS).fill(Tetris.EMPTY_TILE));
     }
     update = [...replacement, ...update];
     setGrid(update);
-    return complete.length;
-  }, [grid])
+    setToDestroy([]);
+  }
 
   const newGame = () => {
     if(stage === 'game_over')
@@ -76,19 +90,19 @@ function Grid() {
   }, [stage])
 
   useEffect(() => {
-    console.log(JSON.stringify(grid));
+    // console.log(JSON.stringify(grid));
   }, [grid])
   
   return(
     <>
-      <FallingTetro gr={[grid, updateGrid, destroyRows]} st={[stage, setStage]} level={level} />
+      <FallingTetro gr={[grid, updateGrid, commenceDestroy]} st={[stage, setStage]} level={level} />
       <div className='board' onClick={() => newGame() }>
         {grid.map((row, i) => {
           return ( i >= Tetris.ACTUAL_ROWS - Tetris.DISPLAY_ROWS ?
             <div key={`k${i}`} className='row'>
               {row.map((sq, j) => {
                 return (
-                  <Tile key={`k${i}${j}`} type={grid[i][j]}/>
+                  <Tile key={`k${i}${j}`} type={grid[i][j]} magnitude={toDestroy.includes(i) ? toDestroy.length : 0}/>
                   );
                 })}
             </div> : null

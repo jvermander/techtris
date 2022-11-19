@@ -46,13 +46,15 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
   }
 
   const spawnTetro = (): void => {
-    var randomType = getRandomType();
+    // var randomType = getRandomType();
+    var randomType = 'I' as TileType;
 
-    const init = getRotation(randomType, { x: Tetris.SPAWN_COL, y: Tetris.SPAWN_ROW }, 0);
+    const init = getRotation(randomType, { x: Tetris.COLS - 1, y: Tetris.SPAWN_ROW }, 1);
+    // const init = getRotation(randomType, { x: Tetris.SPAWN_COL, y: Tetris.SPAWN_ROW }, 0);
     setPosition(init);
     setLastPosition([]);
     setType(randomType);    
-    setRotationIdx(0);
+    setRotationIdx(1);
     setTime(new Date().getTime());
 
     if(isSpawnBlocked(init)) {
@@ -204,7 +206,7 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
 
   useEffect(() => {
     document.onkeydown = (e) => {
-      if(stage != 'play' || spawnPending)
+      if(stage != 'play' || spawnPending || destroyPending)
         return;
       switch(e.key) {
         // case 'ArrowUp': onTranslate(0, -1); break; // for debugging

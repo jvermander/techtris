@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, LegacyRef } from 'react';
 import { TileType } from 'data/types';
+import { TileAnimator } from 'components';
 import 'styles/Tile.css';
 
 type props = {
   type: TileType;
+  magnitude: number;
 }
 
-const Tile: React.FC<props> = ({ type }) => {
-
+const Tile: React.FC<props> = ({ type, magnitude }) => {
   return (
-    <div className={`tile ${type}`} />
+    <div className={`tile ${type}`}>
+      <TileAnimator type={type} magnitude={magnitude}/>
+    </div>
   )
 
 }
