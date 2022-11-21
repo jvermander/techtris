@@ -28,7 +28,8 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
 
   // state for periodically updating the display
   const [time, setTime] = useState<number>(-1);
-  const [gravity, setGravity] = useState<number>(1000);
+  const [gravity, setGravity] = useState<number>(250);
+  const [gravityTemp, setGravityTemp] = useState<number>(gravity);
   const [destroyPending, setDestroyPending] = useState<boolean>(false);
   const [spawnPending, setSpawnPending] = useState<boolean>(false);
   const timeRef = useRef<number>(time);
@@ -158,7 +159,8 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
 
   useEffect(() => {
     console.log('Pause:', pause);
-    setGravity(pause ? 0: 1000);
+    setGravity(pause ? 0: gravityTemp);
+    setGravityTemp(gravity);
     setTime(new Date().getTime());
   }, [pause])
 

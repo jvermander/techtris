@@ -5,7 +5,8 @@
 }
 
 .root {
-  background-image: url('/src/assets/stars.jpg');
+  background-color: transparent;
+  /* transition: */
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -15,8 +16,24 @@
   overflow: hidden;
 }
 
+#bg {
+  background-color: black;
+  background-image: url('/src/assets/seamless.jpg');
+  background-position: fixed;
+  position: absolute;
+  height: 1000vh;
+  width: 1000vw;
+  transition: all 5s ease;
+  left: -500vw;
+  top: -500vh;
+  animation: space_float;
+  animation-duration: 1700s;
+  animation-iteration-count: infinite;
+}
+
 body {
   overflow: hidden;
+  background-color: black;
 }
 
 :root {
@@ -27,4 +44,13 @@ body {
   --distX: 40px; 
   --kaboom-duration: 1000;
   --tetris-duration: 1000;
+}
+
+@keyframes space_float {
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
