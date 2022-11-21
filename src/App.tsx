@@ -4,9 +4,12 @@ import './App.css'
 
 function App() {
   return (
-    <div className='root'>
-      <Grid/>
-    </div>
+    <>
+    <div id='bg'/>
+      <div className='root'>
+          <Grid/>
+      </div>
+    </>
   );
 }
 
