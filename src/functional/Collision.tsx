@@ -6,7 +6,7 @@ import { TileType, Coordinate } from 'data/types';
   If the coordinate already belongs to another tile, but is in the falling tetro's position,
   then this is not considered a collision, returning false (a tetro cannot collide with itself).
 
-  Can optionally skip the above check by providing null in place of the position.
+  Can optionally skip the above check by providing null in place of the position (default behavior).
 */
 export const isCollision = (toCheck: Coordinate, grid: TileType[][], position: Coordinate[] | null = null): boolean => {
   if(toCheck.y < 0 || toCheck.y >= Tetris.ACTUAL_ROWS || toCheck.x < 0 || toCheck.x >= Tetris.COLS)
@@ -21,12 +21,12 @@ export const isCollision = (toCheck: Coordinate, grid: TileType[][], position: C
 
   return grid[toCheck.y][toCheck.x] != Tetris.EMPTY_TILE;
 }
-/*
-  Along the Y-axis, returns the shortest distance that can be travelled before a 
-  collision is encountered for a given tetromino position.
+
+/* 
+  Along the Y-axis, returns the nearest collision tiles for the given position. 
 */
-export const findYCollisionDist = (grid: TileType[][], position: Coordinate[]): number => {
-  var candidates = findDistinct('x', position); // first find all points in the position which are candidates for vertical collision
+export const findYCollisions = (grid: TileType[][], position: Coordinate[]) => {
+  var candidates = findDistinct('x', position); // find all points in the position which are candidates for vertical collision
 
   var collisions = new Array<Coordinate>();
   for(const c of candidates) { // for each candidate, search down its column for a non-empty tile
@@ -35,6 +35,16 @@ export const findYCollisionDist = (grid: TileType[][], position: Coordinate[]): 
       y++;
     collisions.push({ x: c.x, y });
   }
+  return collisions;
+}
+
+/*
+  Along the Y-axis, returns the shortest distance that can be travelled before a 
+  collision is encountered for a given tetromino position.
+*/
+export const findYCollisionDist = (grid: TileType[][], position: Coordinate[]): number => {
+  var candidates = findDistinct('x', position); 
+  var collisions = findYCollisions(grid, position);
 
   // for each candidate and collision pair, return the shortest distance between the two, minus one
   var shortest = collisions[0].y - candidates[0].y;
@@ -47,7 +57,7 @@ export const findYCollisionDist = (grid: TileType[][], position: Coordinate[]): 
 }
 
 /*
-  Along the provided axis Z and a given position P,
+  For some axis Z and position P,
   return all coordinates in P that have a distinct Z value.
 
   If two coordinates have the same Z value, 

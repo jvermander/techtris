@@ -2,19 +2,23 @@ import React, { useEffect, useRef, useState } from "react";
 import { FallingTile } from 'components';
 import { Tetris, roulette } from 'data/Tetris';
 import { TileType, Coordinate, GameStage } from 'data/types';
-import { isCollision, findYCollisionDist, getRotation } from 'functional';
+import { isCollision, findYCollisionDist, getRotation, findYCollisions } from 'functional';
 
 type props = {
   gr: [
     grid: TileType[][], 
-    updateGrid: (position: Coordinate[], type: TileType) => void,
+    updateGrid: (
+      position: Coordinate[], 
+      type: TileType, 
+    ) => void,
+    renderShadow: (collisions: Coordinate[]) => (void)
   ],
   st: [GameStage, React.Dispatch<React.SetStateAction<GameStage>>]
   level: number,
 }
 
 const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
-  const [grid, updateGrid] = gr;
+  const [grid, updateGrid, renderShadow] = gr;
   const [stage, setStage] = st;
 
   // state describing the current tetromino
@@ -152,7 +156,7 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
       // if the player hit spacebar, then either 
       // 1) the pending flag will be set (awaiting the spawn)
       // 2) or the time variable will be stale (spawn has already occurred)
-      if(pendingRef.current || timeRef.current != time || pauseRef.current )
+      if(pendingRef.current || timeRef.current != time || pauseRef.current || gravity <= 0)
         return; // quit in either case
 
       var success = onTranslate(0, 1, posRef.current);
@@ -165,11 +169,14 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
     }, gravity);
   }, [time])
 
-
-  // rework: do not update grid unless on destroy
   useEffect(() => {
-    if(destroyPending)
+    console.log('Position:', position);
+    if(destroyPending) {
       updateGrid(position, type);
+      renderShadow([]);
+    } else {
+      renderShadow(findYCollisions(grid, position));
+    }
   }, [position])
 
   useEffect(() => {
@@ -181,7 +188,7 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
 
   useEffect(() => {
     document.onkeydown = (e) => {
-      if(stage != 'play' || destroyPending)
+      if(stage !== 'play' || destroyPending)
         return;
       switch(e.key) {
         case 'ArrowUp': onTranslate(0, -1); break; // for debugging
