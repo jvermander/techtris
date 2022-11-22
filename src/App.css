@@ -23,11 +23,10 @@
   position: absolute;
   height: 1000vh;
   width: 1000vw;
-  transition: all 5s ease;
   left: -500vw;
   top: -500vh;
   animation: space_float;
-  animation-duration: 1700s;
+  animation-duration: 1600s;
   animation-iteration-count: infinite;
 }
 
@@ -52,5 +51,19 @@ body {
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes space_travel_left {
+  50% { transform: rotate(5deg);
+  }
+  100% { transform: rotate(10deg);
+  }
+}
+
+@keyframes space_travel_right {
+  50% { transform: translate(12.5vw, 12.5vh) rotate(-5deg);
+  }
+  100% { transform: translate(25vw, 25vh) rotate(-10deg);
   }
 }

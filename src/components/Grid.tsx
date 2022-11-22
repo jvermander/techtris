@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Tetris } from 'data/Tetris';
 import { TileType, Coordinate, GameStage } from 'data/types';
-import { findCompleteRows } from 'functional';
+import { findCompleteRows, findYCollisions } from 'functional';
 import { Tile, FallingTetro } from 'components';
 import 'styles/Grid.css';
 
+type props = {
+  setTetrisCount: React.Dispatch<React.SetStateAction<number>>;
+}
 
 const initGrid = (development: boolean = false) => {
   var grid : TileType[][] = new Array<Array<TileType>>(Tetris.ACTUAL_ROWS);
@@ -22,12 +25,13 @@ const initGrid = (development: boolean = false) => {
   return grid;
 }
 
-function Grid() {
+const Grid: React.FC<props> = ({ setTetrisCount }) => {
   const [grid, setGrid] = useState<TileType[][]>(initGrid());
   const [level, setLevel] = useState<number>(0);
   const [stage, setStage] = useState<GameStage>('setup');
 
   const [toDestroy, setToDestroy] = useState<number[]>([]);
+  const [shadow, setShadow] = useState<Coordinate[]>([]);
 
   useEffect(() => {
     document.documentElement.style.setProperty('--tetris-duration', `${Tetris.TETRIS_DURATION}ms`);
@@ -52,8 +56,12 @@ function Grid() {
     if(!toDestroy.length)
       return;
     
+    var delay = 0;
     // Take a moment to animate a tetris
-    var delay = toDestroy.length === 4 ? Tetris.TETRIS_DURATION : 0;
+    if(toDestroy.length === 4) {
+      setTetrisCount(prev => prev + 1);
+      delay = Tetris.TETRIS_DURATION;
+    }
     setTimeout(() => {
       concludeDestroy();
     }, delay);
@@ -70,6 +78,10 @@ function Grid() {
     setGrid(update);
     setToDestroy([]);
   }
+
+  const renderShadow = useCallback((collisions: Coordinate[]) => {
+    setShadow(collisions);
+  }, []);
 
   const newGame = () => {
     if(stage === 'game_over')
@@ -91,10 +103,18 @@ function Grid() {
     console.log(JSON.stringify(grid));
   }, [grid])
   
+  const getShadow = (i: number, j: number) => {
+    if(shadow.findIndex((p) => ( p.y === i && p.x === j )) != -1)
+      return 'top';
+    else if(shadow.findIndex((p) => ( p.y - 1 === i && p.x === j && p.y === Tetris.ACTUAL_ROWS )) != -1)
+      return 'bot';
+    return 'none';
+  }
+
   return(
     <>
       <div className='board' onClick={() => newGame() }>
-      <FallingTetro gr={[grid, updateGrid]} st={[stage, setStage]} level={level} />
+      <FallingTetro gr={[grid, updateGrid, renderShadow]} st={[stage, setStage]} level={level} />
         {grid.map((row, i) => {
           return ( i >= Tetris.ACTUAL_ROWS - Tetris.DISPLAY_ROWS ?
             <div key={`k${i}`} className='row'>
@@ -106,6 +126,7 @@ function Grid() {
                     type={grid[i][j]}
                     magnitude={toDestroy.includes(i) ? toDestroy.length : 0}
                     tetris={toDestroy.length === 4}
+                    shadow={getShadow(i, j)}
                   />
                   );
                 })}

@@ -9,9 +9,10 @@ type props = {
   magnitude: number;
   tetris: boolean;
   id: string;
+  shadow: string;
 }
 
-const Tile: React.FC<props> = ({ type, magnitude, tetris, id }) => {
+const Tile: React.FC<props> = ({ type, magnitude, tetris, id, shadow }) => {
   const [classList, setClassList] = useState<string[]>([type, 'tile'])
   const [exitTime, setExitTime] = useState(0);
   const timeRef = useRef(exitTime);
@@ -41,6 +42,16 @@ const Tile: React.FC<props> = ({ type, magnitude, tetris, id }) => {
     if(tetris)
       tetrisMode();
   }, [tetris])
+
+  useEffect(() => {
+    if(shadow === 'top') {
+      setClassList( prev => ( [ ...prev, 'falling-shadow'] ));
+    } else if(shadow === 'bot') {
+      setClassList( prev => ( [ ...prev, 'falling-shadow-bot' ] ));
+    } else {
+      setClassList( prev => (prev.filter((value) => (value != 'falling-shadow' && value != 'falling-shadow-bot'))));
+    }
+  }, [shadow])
 
   useEffect(() => {
     setClassList( prev => ([type, ...prev.filter((value, index) => (index != 0))]));
