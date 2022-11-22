@@ -8,7 +8,7 @@ import { TileType, Coordinate } from 'data/types';
 
   Can optionally skip the above check by providing null in place of the position.
 */
-export const isCollision = (toCheck: Coordinate, grid: TileType[][], position: Coordinate[] | null): boolean => {
+export const isCollision = (toCheck: Coordinate, grid: TileType[][], position: Coordinate[] | null = null): boolean => {
   if(toCheck.y < 0 || toCheck.y >= Tetris.ACTUAL_ROWS || toCheck.x < 0 || toCheck.x >= Tetris.COLS)
     return true;
 
@@ -82,7 +82,8 @@ export const findCompleteRows = (grid: TileType[][], position: Coordinate[]): nu
   var candidates = findDistinct('y', position);
   for(const c of candidates) {
     var x = 0;
-    while(x < Tetris.COLS && grid[c.y][x] !== Tetris.EMPTY_TILE) {
+    while(x < Tetris.COLS && 
+      (grid[c.y][x] !== Tetris.EMPTY_TILE || position.includes({ x, y: c.y }))) {
       x++;
     }
     // sorted insertion

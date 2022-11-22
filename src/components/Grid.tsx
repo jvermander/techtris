@@ -38,26 +38,15 @@ function Grid() {
     update each coordinate in the given stale set as empty.
     Effectively, this enables movement on screen.
   */
-  const updateGrid = useCallback((position: Coordinate[], type: TileType, lastPosition: Coordinate[]): void => {
+  const updateGrid = useCallback((position: Coordinate[], type: TileType): void => {
     var update = [...grid];
-    if(lastPosition.length > 0) {
-      for(const p of lastPosition) {
-        update[p.y][p.x] = Tetris.EMPTY_TILE;
-      }
-    }
     for(const p of position) {
       update[p.y][p.x] = type as TileType;
     }
+    var complete = findCompleteRows(grid, position);
+    setToDestroy(complete);
     setGrid(update);
   }, [grid]);
-
-  const commenceDestroy = useCallback((position: Coordinate[]): number => {
-    var complete = findCompleteRows(grid, position);
-    if(complete.length === 0)
-      return 0;
-    setToDestroy(complete);
-    return complete.length;
-  }, [grid])
 
   useEffect(() => {
     if(!toDestroy.length)
@@ -99,13 +88,13 @@ function Grid() {
   }, [stage])
 
   useEffect(() => {
-    // console.log(JSON.stringify(grid));
+    console.log(JSON.stringify(grid));
   }, [grid])
   
   return(
     <>
-      <FallingTetro gr={[grid, updateGrid, commenceDestroy]} st={[stage, setStage]} level={level} />
       <div className='board' onClick={() => newGame() }>
+      <FallingTetro gr={[grid, updateGrid]} st={[stage, setStage]} level={level} />
         {grid.map((row, i) => {
           return ( i >= Tetris.ACTUAL_ROWS - Tetris.DISPLAY_ROWS ?
             <div key={`k${i}`} className='row'>

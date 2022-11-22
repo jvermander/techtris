@@ -1,26 +1,24 @@
 import React, { useEffect, useRef, useState } from "react";
+import { FallingTile } from 'components';
 import { Tetris, roulette } from 'data/Tetris';
 import { TileType, Coordinate, GameStage } from 'data/types';
 import { isCollision, findYCollisionDist, getRotation } from 'functional';
-import Assert from 'assert-js';
 
 type props = {
   gr: [
     grid: TileType[][], 
-    updateGrid: (position: Coordinate[], type: TileType, lastPosition: Coordinate[]) => void,
-    destroyRows: (position: Coordinate[]) => number
+    updateGrid: (position: Coordinate[], type: TileType) => void,
   ],
   st: [GameStage, React.Dispatch<React.SetStateAction<GameStage>>]
   level: number,
 }
 
 const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
-  const [grid, updateGrid, destroyRows] = gr;
+  const [grid, updateGrid] = gr;
   const [stage, setStage] = st;
 
   // state describing the current tetromino
   const [position, setPosition] = useState<Coordinate[]>([]);
-  const [lastPosition, setLastPosition] = useState<Coordinate[]>([]); // required for erasing from the grid
   const [type, setType] = useState<TileType>(Tetris.EMPTY_TILE);
   const [rotationIdx, setRotationIdx] = useState<number>(0);
   const posRef = useRef<Coordinate[]>(position);
@@ -31,29 +29,26 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
   const [gravity, setGravity] = useState<number>(250);
   const [gravityTemp, setGravityTemp] = useState<number>(gravity);
   const [destroyPending, setDestroyPending] = useState<boolean>(false);
-  const [spawnPending, setSpawnPending] = useState<boolean>(false);
   const timeRef = useRef<number>(time);
-  const pendingRef = useRef<boolean>(spawnPending);
+  const pendingRef = useRef<boolean>(destroyPending);
   timeRef.current = time;
-  pendingRef.current = spawnPending;
+  pendingRef.current = destroyPending;
 
   const [pause, setPause] = useState<boolean>(false);
   const pauseRef = useRef(pause);
   pauseRef.current = pause;
   
-  const updatePosition = (update: Coordinate[], current: (Coordinate[] | null) = null): void => {
-    setLastPosition(current ?? position);
+  const updatePosition = (update: Coordinate[]): void => {
     setPosition(update);
   }
 
   const spawnTetro = (): void => {
     var randomType = getRandomType();
     // var randomType = 'I' as TileType;
-
+    console.log('Spawning', randomType);
     const init = getRotation(randomType, { x: Tetris.SPAWN_COL, y: Tetris.SPAWN_ROW }, 0);
     // const init = getRotation(randomType, { x: Tetris.COLS - 1, y: Tetris.SPAWN_ROW }, 1);
     setPosition(init);
-    setLastPosition([]);
     setType(randomType);    
     setRotationIdx(0);
     // setRotationIdx(1);
@@ -61,14 +56,14 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
 
     if(isSpawnBlocked(init)) {
       console.log('Game over!');
-      console.log('Final tetro is of type', randomType);
+      console.log('Final tetro is of type', randomType); // todo - render last spawn
       setStage('game_over');
     }
   };
 
   const isSpawnBlocked = (position: Coordinate[]): boolean => {
     for(const p of position) {
-      if(isCollision(p, grid, null))
+      if(isCollision(p, grid))
         return true;
     }
     return false;
@@ -78,17 +73,6 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
     return roulette[Math.floor(Math.random() * Tetris.NUM_TETROS)];
   }
 
-  const onDestroy = (position: Coordinate[]): boolean => {
-    var numDestroyed = destroyRows(position);
-    console.log('# Destroyed:', numDestroyed);
-    if(numDestroyed)
-      setSpawnPending(true);
-    else
-      spawnTetro();
-    setDestroyPending(false);
-    return numDestroyed != 0;
-  }
-
   /* 
     Translates the falling tetromino in the given directions.
     Returns true if successful, or false if impossible.
@@ -96,20 +80,17 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
     An optional current position can be supplied if the caller believes it has a 
     more recent version of position (e.g. in timeout functions).
   */
-  const onTranslate = (x_step: number, y_step: number, current: (Coordinate[] | null) = null): boolean => {
-    if(!x_step && !y_step) // if a zero-translation, return true but do not update any state
-      return true;
-
+  const onTranslate = (x_step: number, y_step: number, current: Coordinate[] | null = null): boolean => {
     var update = new Array<Coordinate>();
     for(const p of current ?? position) {
       var newCoord: Coordinate = { x: p.x + x_step, y: p.y + y_step };
-      if(!isCollision(newCoord, grid, current ?? position)) {
+      if(!isCollision(newCoord, grid)) {
         update.push(newCoord);
       } else {
         return false;
       }
     }
-    updatePosition(update, current);
+    updatePosition(update);
     return true;
   }
 
@@ -132,7 +113,7 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
     const update = getRotation(type, pivot, newRotationIdx);
     var i = 0;
     for(const p of update) {
-      if(i !== pivotIdx && isCollision(p, grid, position))
+      if(i !== pivotIdx && isCollision(p, grid))
         return false;
       i++;
     }
@@ -145,11 +126,7 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
   const onDrop = (): void => {
     var fallDist = findYCollisionDist(grid, position);
     onTranslate(0, fallDist);
-    if(fallDist === 0) {
-      onDestroy(position);
-    } else {
-      setDestroyPending(true);
-    }
+    setDestroyPending(true);
   }
 
   useEffect(() => {
@@ -164,7 +141,6 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
     setTime(new Date().getTime());
   }, [pause])
 
-
   /*
     Updates the time slice (i.e. applies gravity periodically).
   */
@@ -176,43 +152,39 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
       // if the player hit spacebar, then either 
       // 1) the pending flag will be set (awaiting the spawn)
       // 2) or the time variable will be stale (spawn has already occurred)
-      if(pendingRef.current || timeRef.current != time || pauseRef.current)
+      if(pendingRef.current || timeRef.current != time || pauseRef.current )
         return; // quit in either case
 
-      var success = onTranslate(0, 1, posRef.current); // position variable is stale here, must supply a reference
+      var success = onTranslate(0, 1, posRef.current);
       if(success) {
         setTime(time + gravity);
       } else { // tetro hit the ground, spawn another
-        console.log('Tetro hit the ground.')
-        onDestroy(posRef.current);
+        onTranslate(0, 0, posRef.current); // force an update
+        setDestroyPending(true);
       }
     }, gravity);
   }, [time])
 
+
+  // rework: do not update grid unless on destroy
   useEffect(() => {
-    if(stage === 'setup')
-      return;
-    updateGrid(position, type, lastPosition);
+    if(destroyPending)
+      updateGrid(position, type);
   }, [position])
 
   useEffect(() => {
     if(stage === 'setup')
       return;
-
-    if(destroyPending) {
-      onDestroy(position);
-    } else if(spawnPending) {
-      spawnTetro();
-      setSpawnPending(false);
-    }
-  }, [grid])
+    setDestroyPending(false);
+    spawnTetro();
+  }, [grid]);
 
   useEffect(() => {
     document.onkeydown = (e) => {
-      if(stage != 'play' || spawnPending || destroyPending)
+      if(stage != 'play' || destroyPending)
         return;
       switch(e.key) {
-        // case 'ArrowUp': onTranslate(0, -1); break; // for debugging
+        case 'ArrowUp': onTranslate(0, -1); break; // for debugging
         case 'ArrowDown': onTranslate(0, 1); break;
         case 'ArrowLeft': onTranslate(-1, 0); break;
         case 'ArrowRight': onTranslate(1, 0); break;
@@ -223,11 +195,13 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
         default: return;
       }
     }
-  }, [onTranslate, onRotate, spawnPending])
+  }, [onTranslate, onRotate, onDrop, destroyPending])
 
   return (
     <div>
-
+      {position.map((p, i) => {
+        return <FallingTile type={type} coord={p} key={i} />
+      })}
     </div>
   )
 
