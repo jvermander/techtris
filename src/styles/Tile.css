@@ -16,29 +16,17 @@
 }
 
 .I, .O, .J, .L, .S, .Z, .T {
-  /* background-color: transparent !important;
-  border: 1px solid white !important; */
-
   border: 1px solid black;
   border-radius: 2px;
   box-shadow: inset 0 0 1px 1px white;
   transition: background-color 0.3s ease;
 }
 
-.I.tetris, 
-.O.tetris, 
-.J.tetris, 
-.L.tetris, 
-.S.tetris,
-.Z.tetris,
-.T.tetris {
-  animation: tetris;
-  border-color: white;
-  animation-duration: var(--tetris-duration);
-  animation-fill-mode: forwards;
-}
-
 @keyframes tetris {
+  0% {
+    border-color: white;
+    box-shadow: none !important;
+  }
   50% {
     background-color: white;
   }
@@ -47,17 +35,12 @@
   }
 }
 
-.transition {
-  transition: background-color var(--tetris-mode-exit-transition) ease-out; 
-}
-
 .kaboom {
   animation: kaboom;
   opacity: 0;
   animation-timing-function: ease-out;
   animation-duration: var(--kaboom-duration);
   background-color: white !important;
-  border: 1px solid white;
   box-shadow: none !important;
   position: absolute;
 }

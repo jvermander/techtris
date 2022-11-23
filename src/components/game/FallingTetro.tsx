@@ -11,14 +11,13 @@ type props = {
       position: Coordinate[], 
       type: TileType, 
     ) => void,
-    renderShadow: (collisions: Coordinate[]) => (void)
   ],
   st: [GameStage, React.Dispatch<React.SetStateAction<GameStage>>]
   level: number,
 }
 
 const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
-  const [grid, updateGrid, renderShadow] = gr;
+  const [grid, updateGrid] = gr;
   const [stage, setStage] = st;
 
   // state describing the current tetromino
@@ -33,7 +32,6 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
   const [gravity, setGravity] = useState<number>(Tetris.INIT_GRAVITY);
   const [gravityTemp, setGravityTemp] = useState<number>(gravity);
   const [destroyPending, setDestroyPending] = useState<boolean>(false);
-  const [spawnPending, setSpawnPending] = useState<boolean>(false);
   const timeRef = useRef<number>(time);
   const pendingRef = useRef<boolean>(destroyPending);
   timeRef.current = time;
@@ -48,7 +46,6 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
   }
 
   const spawnTetro = (): void => {
-    setSpawnPending(true);
     var randomType = getRandomType();
     // var randomType = 'I' as TileType;
     console.log('Spawning', randomType);
@@ -173,13 +170,8 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
 
   useEffect(() => {
     // console.log('Position:', position);
-    if(spawnPending)
-      setSpawnPending(false);
     if(destroyPending) {
       updateGrid(position, type);
-      renderShadow([]);
-    } else {
-      renderShadow(findYCollisions(grid, position));
     }
   }, [position])
 
@@ -212,7 +204,7 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
   return (
     <div>
       {position.map((p, i) => {
-        return <FallingTile type={type} coord={p} key={i} pending={spawnPending}/>
+        return <FallingTile type={type} coord={p} key={i}/>
       })}
     </div>
   )

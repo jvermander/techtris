@@ -16,10 +16,9 @@
 }
 
 .btn-ctn {
-  border: 1px solid gold;
+  border: 1px solid purple;
   background-color: rgb(45, 0, 45);
-  box-shadow: 5px 5px 1px 1px gold;
-
+  box-shadow: 5px 5px 1px 1px purple;
   font-size: 1.2rem;
   width: fit-content;
   padding: 0.8em;
