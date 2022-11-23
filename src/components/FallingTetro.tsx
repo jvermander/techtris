@@ -47,15 +47,15 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
   }
 
   const spawnTetro = (): void => {
-    var randomType = getRandomType();
-    // var randomType = 'I' as TileType;
+    // var randomType = getRandomType();
+    var randomType = 'I' as TileType;
     console.log('Spawning', randomType);
-    const init = getRotation(randomType, { x: Tetris.SPAWN_COL, y: Tetris.SPAWN_ROW }, 0);
-    // const init = getRotation(randomType, { x: Tetris.COLS - 1, y: Tetris.SPAWN_ROW }, 1);
+    // const init = getRotation(randomType, { x: Tetris.SPAWN_COL, y: Tetris.SPAWN_ROW }, 0);
+    const init = getRotation(randomType, { x: Tetris.COLS - 1, y: Tetris.SPAWN_ROW }, 1);
     setPosition(init);
     setType(randomType);    
-    setRotationIdx(0);
-    // setRotationIdx(1);
+    // setRotationIdx(0);
+    setRotationIdx(1);
     setTime(new Date().getTime());
 
     if(isSpawnBlocked(init)) {
