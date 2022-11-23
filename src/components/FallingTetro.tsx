@@ -30,7 +30,7 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
 
   // state for periodically updating the display
   const [time, setTime] = useState<number>(-1);
-  const [gravity, setGravity] = useState<number>(250);
+  const [gravity, setGravity] = useState<number>(Tetris.INIT_GRAVITY);
   const [gravityTemp, setGravityTemp] = useState<number>(gravity);
   const [destroyPending, setDestroyPending] = useState<boolean>(false);
   const timeRef = useRef<number>(time);
@@ -170,7 +170,7 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
   }, [time])
 
   useEffect(() => {
-    console.log('Position:', position);
+    // console.log('Position:', position);
     if(destroyPending) {
       updateGrid(position, type);
       renderShadow([]);

@@ -26,7 +26,7 @@
   left: -500vw;
   top: -500vh;
   animation: space_float;
-  animation-duration: 1600s;
+  animation-duration: 1000s;
   animation-iteration-count: infinite;
 }
 
@@ -43,6 +43,7 @@ body {
   --distX: 40px; 
   --kaboom-duration: 1000;
   --tetris-duration: 1000;
+  --tetris-mode-exit-transition: 0;
 }
 
 @keyframes space_float {
