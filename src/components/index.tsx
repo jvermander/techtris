@@ -1,13 +1,19 @@
-import Grid from "./Grid";
-import Tile from './Tile';
-import FallingTetro from "./FallingTetro";
-import FallingTile from "./FallingTile";
-import TileAnimator from "./TileAnimator";
+import Grid from "./game/Grid";
+import Tile from './game/Tile';
+import FallingTetro from "./game/FallingTetro";
+import FallingTile from "./game/FallingTile";
+import TileAnimator from "./game/TileAnimator";
+import Greeting from './UI/Greeting';
+import Modal from "./UI/Modal";
+import Button from "./UI/Button";
 
 export { 
   Grid, 
   Tile, 
   FallingTetro,
   FallingTile,
-  TileAnimator 
+  TileAnimator,
+  Greeting,
+  Modal,
+  Button
 };
