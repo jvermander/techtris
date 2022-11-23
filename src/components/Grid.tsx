@@ -5,11 +5,9 @@ import { findCompleteRows, findYCollisions } from 'functional';
 import { Tile, FallingTetro } from 'components';
 import 'styles/Grid.css';
 
-type props = {
-  setTetrisCount: React.Dispatch<React.SetStateAction<number>>;
-}
+type props = {}
 
-const initGrid = (development: boolean = false) => {
+const initGrid = (development: boolean = true) => {
   var grid : TileType[][] = new Array<Array<TileType>>(Tetris.ACTUAL_ROWS);
 
   for(var i = 0; i < Tetris.ACTUAL_ROWS; i++) {
@@ -25,16 +23,18 @@ const initGrid = (development: boolean = false) => {
   return grid;
 }
 
-const Grid: React.FC<props> = ({ setTetrisCount }) => {
+const Grid: React.FC<props> = ({}) => {
   const [grid, setGrid] = useState<TileType[][]>(initGrid());
   const [level, setLevel] = useState<number>(0);
   const [stage, setStage] = useState<GameStage>('setup');
+  const [tetrisModeEnd, setTetrisModeEnd] = useState<number>(-1);
 
   const [toDestroy, setToDestroy] = useState<number[]>([]);
   const [shadow, setShadow] = useState<Coordinate[]>([]);
 
   useEffect(() => {
     document.documentElement.style.setProperty('--tetris-duration', `${Tetris.TETRIS_DURATION}ms`);
+    document.documentElement.style.setProperty('--tetris-mode-exit-transition', `${Tetris.TETRIS_MODE_EXIT_TRANSITION}ms`);
   }, [])
 
   /*
@@ -59,7 +59,6 @@ const Grid: React.FC<props> = ({ setTetrisCount }) => {
     var delay = 0;
     // Take a moment to animate a tetris
     if(toDestroy.length === 4) {
-      setTetrisCount(prev => prev + 1);
       delay = Tetris.TETRIS_DURATION;
     }
     setTimeout(() => {
@@ -100,7 +99,7 @@ const Grid: React.FC<props> = ({ setTetrisCount }) => {
   }, [stage])
 
   useEffect(() => {
-    console.log(JSON.stringify(grid));
+    // console.log(JSON.stringify(grid));
   }, [grid])
   
   const getShadow = (i: number, j: number) => {
@@ -113,7 +112,7 @@ const Grid: React.FC<props> = ({ setTetrisCount }) => {
 
   return(
     <>
-      <div className='board' onClick={() => newGame() }>
+      <div id='board' onClick={() => newGame() }>
       <FallingTetro gr={[grid, updateGrid, renderShadow]} st={[stage, setStage]} level={level} />
         {grid.map((row, i) => {
           return ( i >= Tetris.ACTUAL_ROWS - Tetris.DISPLAY_ROWS ?
@@ -125,8 +124,8 @@ const Grid: React.FC<props> = ({ setTetrisCount }) => {
                     id={`${i}${j}`} 
                     type={grid[i][j]}
                     magnitude={toDestroy.includes(i) ? toDestroy.length : 0}
-                    tetris={toDestroy.length === 4}
                     shadow={getShadow(i, j)}
+                    tetris={toDestroy.length === 4}
                   />
                   );
                 })}

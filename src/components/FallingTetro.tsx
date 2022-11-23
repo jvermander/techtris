@@ -30,7 +30,7 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
 
   // state for periodically updating the display
   const [time, setTime] = useState<number>(-1);
-  const [gravity, setGravity] = useState<number>(250);
+  const [gravity, setGravity] = useState<number>(Tetris.INIT_GRAVITY);
   const [gravityTemp, setGravityTemp] = useState<number>(gravity);
   const [destroyPending, setDestroyPending] = useState<boolean>(false);
   const timeRef = useRef<number>(time);
@@ -47,15 +47,15 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
   }
 
   const spawnTetro = (): void => {
-    var randomType = getRandomType();
-    // var randomType = 'I' as TileType;
+    // var randomType = getRandomType();
+    var randomType = 'I' as TileType;
     console.log('Spawning', randomType);
-    const init = getRotation(randomType, { x: Tetris.SPAWN_COL, y: Tetris.SPAWN_ROW }, 0);
-    // const init = getRotation(randomType, { x: Tetris.COLS - 1, y: Tetris.SPAWN_ROW }, 1);
+    // const init = getRotation(randomType, { x: Tetris.SPAWN_COL, y: Tetris.SPAWN_ROW }, 0);
+    const init = getRotation(randomType, { x: Tetris.COLS - 1, y: Tetris.SPAWN_ROW }, 1);
     setPosition(init);
     setType(randomType);    
-    setRotationIdx(0);
-    // setRotationIdx(1);
+    // setRotationIdx(0);
+    setRotationIdx(1);
     setTime(new Date().getTime());
 
     if(isSpawnBlocked(init)) {
@@ -170,7 +170,7 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
   }, [time])
 
   useEffect(() => {
-    console.log('Position:', position);
+    // console.log('Position:', position);
     if(destroyPending) {
       updateGrid(position, type);
       renderShadow([]);

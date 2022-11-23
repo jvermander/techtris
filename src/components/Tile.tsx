@@ -14,13 +14,19 @@ type props = {
 
 const Tile: React.FC<props> = ({ type, magnitude, tetris, id, shadow }) => {
   const [classList, setClassList] = useState<string[]>([type, 'tile'])
-  const [exitTime, setExitTime] = useState(0);
+  const [exitTime, setExitTime] = useState(-1);
   const timeRef = useRef(exitTime);
   timeRef.current = exitTime;
 
-  const tetrisMode = (duration: number = 7500) => {
+  const tetrisMode = () => {
+    var board = document.getElementById('board');
+    if(board && new Date().getTime() >= exitTime) {
+      board.style.backgroundColor = 'transparent';
+      board.style.borderColor = 'transparent';
+    }
     setClassList(prev => [...prev, 'tetris-mode', 'tetris']);
-    setExitTime(new Date().getTime() + duration);
+    
+    setExitTime(new Date().getTime() + Tetris.TETRIS_MODE_DURATION);
     
     setTimeout(() => {
       setClassList(prev => (prev.filter((value) => (value !== 'tetris'))));
@@ -28,14 +34,18 @@ const Tile: React.FC<props> = ({ type, magnitude, tetris, id, shadow }) => {
 
     setTimeout(() => {
       if(timeRef.current <= new Date().getTime()) {
+        if(board) {
+          board.style.backgroundColor = '';
+          board.style.borderColor = '';
+        }
         setClassList(prev => ([ ...(prev.filter((value) => (value !== 'tetris-mode'))), 'transition' ] ));
     
         setTimeout(() => {
           setClassList(prev => (prev.filter((value) => (value !== 'transition'))));
 
-        }, 1000)
+        }, Tetris.TETRIS_MODE_EXIT_TRANSITION)
       }
-    }, duration);
+    }, Tetris.TETRIS_MODE_DURATION);
   }
 
   useEffect(() => {

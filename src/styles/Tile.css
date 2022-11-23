@@ -1,7 +1,7 @@
 .tile {
   height: var(--tileHeight);
   width: var(--tileWidth);
-  background-color: black;
+  /* background-color: black; */
 }
 
 
@@ -32,9 +32,6 @@
   animation: tetris;
   border-color: white;
   animation-duration: var(--tetris-duration);
-  /* animation-iteration-count: infinite; */
-  /* background-color: transparent !important; */
-  /* border: 1px solid white !important; */
 }
 
 ._.tetris {
@@ -46,15 +43,11 @@
   50% {
     background-color: white;
     border-color: white;
+    box-shadow: unset;
   }
   100% {
     background-color: transparent;
-  }
-}
-
-@keyframes tetrisEmpty {
-  50% {
-    background-color: black;
+    box-shadow: unset;
   }
 }
 
@@ -66,13 +59,14 @@
 .Z.tetris-mode,
 .T.tetris-mode  {
   transition: background-color 1s ease-out;
-  border-color: white;
+  border: 1px solid white;
+  /* border-style: ; */
   background-color: transparent;
-  box-shadow: unset;
+  box-shadow: 0 0 20px 1px gold;
 }
 
 .transition {
-  transition: background-color 0.25s ease-out; 
+  transition: background-color var(--tetris-mode-exit-transition) ease-out; 
 }
 
 .falling-shadow {

@@ -10,4 +10,4 @@ export {
   FallingTetro,
   FallingTile,
   TileAnimator 
-}
+};
