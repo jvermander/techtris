@@ -8,16 +8,23 @@ type props = {
   type: TileType;
   magnitude: number;
   tetris: boolean;
-  id: string;
-  shadow: string;
 }
 
-const Tile: React.FC<props> = ({ type, magnitude, tetris, id, shadow }) => {
+const Tile: React.FC<props> = ({ type, magnitude, tetris }) => {
+  const ref = useRef<HTMLDivElement>();
+
+  useEffect(() => {
+    if(tetris && ref.current && type !== Tetris.EMPTY_TILE)
+      ref.current.style.animation = 'tetris var(--tetris-duration) ease-out';
+  }, [tetris])
+
   return (
     <div 
-      className={`tile ${type} ${tetris ? 'tetris' : ''}`}
+      ref={ref as LegacyRef<HTMLDivElement>}
+      onAnimationEnd={(e) => { if(e.animationName === 'tetris' && ref.current) ref.current.style.animation = ''; }}
+      className={`tile ${type}`}
     >
-      <TileAnimator type={type} magnitude={magnitude} id={id}/>
+      <TileAnimator type={type} magnitude={magnitude} />
     </div>
   )
 

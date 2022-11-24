@@ -2,9 +2,6 @@
   border: 1px solid purple;
   position: relative;
   background-color: rgba(0, 0, 0, 0.7);
-  transition: background-color var(--tetris-mode-exit-transition) ease,
-              border var(--tetris-mode-exit-transition) ease;
-
 }
 
 .row {

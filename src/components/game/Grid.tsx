@@ -25,45 +25,48 @@ const initGrid = (development: boolean = false) => {
   return grid;
 }
 
+const initMagnitude = () => {
+  var magnitude: number[][] = new Array<Array<number>>(Tetris.ACTUAL_ROWS);
+  for(var i = 3; i < Tetris.ACTUAL_ROWS; i++)
+    magnitude[i] = new Array<number>(Tetris.COLS).fill(0);
+  return magnitude;
+}
+
 const Grid: React.FC<props> = ({ st }) => {
   const [grid, setGrid] = useState<TileType[][]>(initGrid());
   const [level, setLevel] = useState<number>(0);
   const [stage, setStage] = st;
   const [toDestroy, setToDestroy] = useState<number[]>([]);
-  const [shadow, setShadow] = useState<Coordinate[]>([]);
+  const [magnitude, setMagnitude] = useState<number[][]>(initMagnitude());
+  const [tetris, setTetris] = useState(false);  
 
   useEffect(() => {
     document.documentElement.style.setProperty('--tetris-duration', `${Tetris.TETRIS_DURATION}ms`);
-    document.documentElement.style.setProperty('--tetris-mode-exit-transition', `${Tetris.TETRIS_MODE_EXIT_TRANSITION}ms`);
   }, [])
 
-  /*
-    Update each coordinate in the given set with a particular type, and
-    update each coordinate in the given stale set as empty.
-    Effectively, this enables movement on screen.
-  */
   const updateGrid = useCallback((position: Coordinate[], type: TileType): void => {
     var update = [...grid];
     for(const p of position) {
       update[p.y][p.x] = type as TileType;
     }
     var complete = findCompleteRows(grid, position);
-    setToDestroy(complete);
+    var updateMag = [...magnitude];
+    for(const i of complete) {
+      for(var j = 0; j < Tetris.COLS; j++ ) {
+        updateMag[i][j] = complete.length;
+      }
+      setMagnitude(updateMag);
+      setToDestroy(complete);
+      if(complete.length === 4)
+        setTetris(true);
+    }
     setGrid(update);
   }, [grid]);
 
   useEffect(() => {
     if(!toDestroy.length)
       return;
-    
-    var delay = 0;
-    // Take a moment to animate a tetris
-    if(toDestroy.length === 4) {
-      delay = Tetris.TETRIS_DURATION;
-    }
-    setTimeout(() => {
-      concludeDestroy();
-    }, delay);
+    concludeDestroy();
   }, [toDestroy])
 
   const concludeDestroy = (): void => {
@@ -75,12 +78,16 @@ const Grid: React.FC<props> = ({ st }) => {
     }
     update = [...replacement, ...update];
     setGrid(update);
+    var updateMag = [...magnitude];
+    for(const i of toDestroy) {
+      for(var j = 0; j < Tetris.COLS; j++ ) {
+        updateMag[i][j] = 0;
+      }
+    }
+    setMagnitude(updateMag);
     setToDestroy([]);
+    setTetris(false);
   }
-
-  const renderShadow = useCallback((collisions: Coordinate[]) => {
-    setShadow(collisions);
-  }, []);
 
   const newGame = () => {
     if(stage === 'game_over')
@@ -102,18 +109,10 @@ const Grid: React.FC<props> = ({ st }) => {
     // console.log(JSON.stringify(grid));
   }, [grid])
   
-  const getShadow = (i: number, j: number) => {
-    if(shadow.findIndex((p) => ( p.y === i && p.x === j )) != -1)
-      return 'top';
-    else if(shadow.findIndex((p) => ( p.y - 1 === i && p.x === j && p.y === Tetris.ACTUAL_ROWS )) != -1)
-      return 'bot';
-    return 'none';
-  }
-
   return(
     <>
       <div id='board' onClick={() => newGame() }>
-      <FallingTetro gr={[grid, updateGrid, renderShadow]} st={[stage, setStage]} level={level} />
+      <FallingTetro gr={[grid, updateGrid]} st={[stage, setStage]} level={level} />
         {grid.map((row, i) => {
           return ( i >= Tetris.ACTUAL_ROWS - Tetris.DISPLAY_ROWS ?
             <div key={`k${i}`} className='row'>
@@ -121,11 +120,9 @@ const Grid: React.FC<props> = ({ st }) => {
                 return (
                   <Tile 
                     key={`k${i}${j}`} 
-                    id={`${i}${j}`} 
                     type={grid[i][j]}
-                    magnitude={toDestroy.includes(i) ? toDestroy.length : 0}
-                    shadow={'none'}
-                    tetris={toDestroy.length === 4}
+                    magnitude={magnitude[i][j]}
+                    tetris={tetris}
                   />
                   );
                 })}
