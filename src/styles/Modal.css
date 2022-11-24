@@ -1,0 +1,17 @@
+.modal-ctn {
+  border: 1px solid red;
+  padding: 1em;
+  height: fit-content;
+  width: fit-content;
+  min-width: 30em;
+  background-color: black;
+  top: calc(40% - 7.5em);
+  left: calc(50% - 15em);
+  box-shadow: 0 0 1em 0.1em black;
+  color: white;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

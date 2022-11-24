@@ -1,8 +1,10 @@
 #board {
-  border: 5px solid rgba(0, 0, 0, 0.1);;
+  border: 1px solid purple;
   position: relative;
   background-color: rgba(0, 0, 0, 0.7);
-  transition: all var(--tetris-mode-exit-transition) ease;
+  transition: background-color var(--tetris-mode-exit-transition) ease,
+              border var(--tetris-mode-exit-transition) ease;
+
 }
 
 .row {

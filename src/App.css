@@ -6,7 +6,6 @@
 
 .root {
   background-color: transparent;
-  /* transition: */
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -14,20 +13,24 @@
   height: 100vh;
   width: 100vw;
   overflow: hidden;
+  font-family: Sharpin;
 }
 
 #bg {
   background-color: black;
-  background-image: url('/src/assets/seamless.jpg');
-  background-position: fixed;
+  background-image: url('/src/assets/backgrounds/seamless_p4.webp');
+  background-size: 40vw auto;
+  background-repeat: repeat;
   position: absolute;
-  height: 1000vh;
-  width: 1000vw;
-  left: -500vw;
-  top: -500vh;
+  height: 300vw;
+  width: 300vw;
+  left: -150vw;
+  top: -150vw;
   animation: space_float;
-  animation-duration: 1000s;
+  animation-duration: 2200s !important;
   animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  z-index: -1;
 }
 
 body {
@@ -38,13 +41,21 @@ body {
 :root {
   --tileHeight: 1.9em;
   --tileWidth: 2.2em;
+
+  /* Must be set via JS */
   --spin: 0deg;
-  --distY: 20px;
-  --distX: 40px; 
-  --kaboom-duration: 1000;
-  --tetris-duration: 1000;
+  --distY: 0px;
+  --distX: 0px; 
+  --kaboom-duration: 0;
+  --tetris-duration: 0;
   --tetris-mode-exit-transition: 0;
 }
+
+@font-face {
+  font-family: Sharpin;
+  src: url('/src/assets/fonts/Sharpin.otf');
+}
+
 
 @keyframes space_float {
   50% {
@@ -55,16 +66,3 @@ body {
   }
 }
 
-@keyframes space_travel_left {
-  50% { transform: rotate(5deg);
-  }
-  100% { transform: rotate(10deg);
-  }
-}
-
-@keyframes space_travel_right {
-  50% { transform: translate(12.5vw, 12.5vh) rotate(-5deg);
-  }
-  100% { transform: translate(25vw, 25vh) rotate(-10deg);
-  }
-}
