@@ -66,7 +66,7 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
 
   const isSpawnBlocked = (position: Coordinate[]): boolean => {
     for(const p of position) {
-      if(isCollision(p, grid))
+      if(isCollision(p, grid, true))
         return true;
     }
     return false;
@@ -162,8 +162,7 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
       if(success) {
         setTime(time + gravity);
       } else { // tetro hit the ground, spawn another
-        onTranslate(0, 0, posRef.current); // force an update
-        setDestroyPending(true);
+        updateGrid(posRef.current, type);
       }
     }, gravity);
   }, [time])

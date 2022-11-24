@@ -55,19 +55,13 @@ const Grid: React.FC<props> = ({ st }) => {
       for(var j = 0; j < Tetris.COLS; j++ ) {
         updateMag[i][j] = complete.length;
       }
-      setMagnitude(updateMag);
-      setToDestroy(complete);
-      if(complete.length === 4)
-        setTetris(true);
     }
+    setMagnitude(updateMag);
+    setToDestroy(complete);
+    if(complete.length === 4)
+      setTetris(true);
     setGrid(update);
   }, [grid]);
-
-  useEffect(() => {
-    if(!toDestroy.length)
-      return;
-    concludeDestroy();
-  }, [toDestroy])
 
   const concludeDestroy = (): void => {
     var replacement = new Array<Array<TileType>>(0);
@@ -107,6 +101,8 @@ const Grid: React.FC<props> = ({ st }) => {
 
   useEffect(() => {
     // console.log(JSON.stringify(grid));
+    if(toDestroy.length > 0)
+      concludeDestroy();
   }, [grid])
   
   return(
