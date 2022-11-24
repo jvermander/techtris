@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { TileType } from 'data/types';
+import { TileType, Coordinate } from 'data/types';
 import { Tetris } from 'data/Tetris';
-import { number } from 'prop-types';
 
 const Kaboom = {
   DURATION: ['750ms', '750ms', '750ms', '1500ms'],
@@ -18,6 +17,11 @@ type props = {
   magnitude: number;
 }
 
+type Velocity = {
+  x: string;
+  y: string;
+}
+
 /*
    Supports arbitrarily many concurrent animations for a tile,
    depending on what is requested by the grid.
@@ -26,8 +30,18 @@ type props = {
 const TileAnimator: React.FC<props> = ({ type, magnitude }) => {
   const [threads, setThreads] = useState<(JSX.Element | null)[]>([null]);
   const threadsRef = useRef<(JSX.Element | null)[]>(threads);
+  const [randomized, setRandomized] = useState<Velocity[]>([]);
   threadsRef.current = threads;
   
+  useEffect(() => {
+    var update = new Array<Velocity>(5);
+    for(var i = 0; i < update.length - 1; i++) {
+      update[i] = { x: getRandVelocity('x', i + 1), y: getRandVelocity('y', i + 1) }
+    }
+    update[update.length - 1] = { x: getRandSpin(), y: '0' };
+    setRandomized(update);
+  }, [])
+
   useEffect(() => {
     if(!magnitude)
       return;
@@ -50,9 +64,9 @@ const TileAnimator: React.FC<props> = ({ type, magnitude }) => {
           key={`${i}`}
           className={`${type} tile kaboom`} 
           style={{
-            '--distX': getRandVelocity('x', magnitude),
-            '--distY': getRandVelocity('y', magnitude),
-            '--spin': magnitude === 4 ? getRandSpin() : '0deg',
+            '--distX': randomized[magnitude - 1].x,
+            '--distY': randomized[magnitude - 1].y,
+            '--spin': magnitude === 4 ? randomized[randomized.length - 1].x : '0deg',
             '--kaboom-duration': Kaboom.DURATION[magnitude - 1]
           } as React.CSSProperties}
           onAnimationEnd={(e) => { if(e.animationName == 'kaboom') deallocate(i)} }
