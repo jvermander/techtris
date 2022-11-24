@@ -41,6 +41,7 @@
   animation-timing-function: ease-out;
   animation-duration: var(--kaboom-duration);
   background-color: white !important;
+  border: none !important;
   box-shadow: none !important;
   position: absolute;
 }
