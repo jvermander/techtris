@@ -6,13 +6,10 @@ import { Tetris } from 'data/Tetris';
 type props = {
   type: TileType;
   coord: Coordinate;
-  pending: boolean;
 }
 
-const FallingTile: React.FC<props> = ({ type, coord, pending }) => {
+const FallingTile: React.FC<props> = ({ type, coord }) => {
   const ref = useRef<HTMLDivElement>();
-  const [left, setLeft] = useState<string>('');
-  const [top, setTop] = useState<string>('');
 
   useEffect(() => {
     if(!ref.current)
@@ -29,7 +26,7 @@ const FallingTile: React.FC<props> = ({ type, coord, pending }) => {
     <div
       ref={ref as LegacyRef<HTMLDivElement>}
       className={`falling-tile ${type}`}
-      style={{transition: 'left 0.15s, top 0.15s, opacity 0.15s', display: 'flex'}}
+      style={{transition: 'left 0.15s, top 0.15s, opacity 0.15s', display: 'block'}}
     >
     </div>
   )

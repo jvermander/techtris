@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { TileType } from 'data/types';
 import { Tetris } from 'data/Tetris';
+import { number } from 'prop-types';
 
 const Kaboom = {
-  DURATION: ['750ms', '750ms', '1000ms', '1500ms'],
+  DURATION: ['750ms', '750ms', '750ms', '1500ms'],
   MIN_X: [20, 40, 100, 80],
   MAX_X: [60, 100, 150, 400],
   MIN_Y: [20, 40, 100, 80],
@@ -15,7 +16,6 @@ const Kaboom = {
 type props = {
   type: TileType;
   magnitude: number;
-  id: string;
 }
 
 /*
@@ -23,13 +23,10 @@ type props = {
    depending on what is requested by the grid.
    Proper care is taken to avoid memory leaks and excessive performance loss.
 */
-const TileAnimator: React.FC<props> = ({ type, magnitude, id }) => {
-  const [queue, setQueue] = useState<number[]>([0]);
+const TileAnimator: React.FC<props> = ({ type, magnitude }) => {
   const [threads, setThreads] = useState<(JSX.Element | null)[]>([null]);
   const threadsRef = useRef<(JSX.Element | null)[]>(threads);
-  const queueRef = useRef<number[]>(queue);
   threadsRef.current = threads;
-  queueRef.current = queue;
   
   useEffect(() => {
     if(!magnitude)
@@ -37,14 +34,7 @@ const TileAnimator: React.FC<props> = ({ type, magnitude, id }) => {
 
     var delay = magnitude === 4 ? Tetris.TETRIS_DURATION : 0; 
     setTimeout(() => {
-      if(queueRef.current.length > 0) { // available threads
-        allocate(queueRef.current[0], type, magnitude);
-        var update = [...queueRef.current];
-        update.splice(0, 1); // dequeue
-        setQueue(update);
-      } else { // all threads busy, must allocate another
-        allocate(threadsRef.current.length, type, magnitude, true);
-      }
+      allocate(0, type, magnitude);
     }, delay);
   }, [magnitude])
 
@@ -52,9 +42,6 @@ const TileAnimator: React.FC<props> = ({ type, magnitude, id }) => {
     var update = [...threadsRef.current];
     update[i] = null;
     setThreads(update);
-    var idxUpdate = [...queueRef.current];
-    idxUpdate.push(i); // enqueue
-    setQueue(idxUpdate);
   }
 
   const allocate = (i: number, type: TileType, magnitude: number, more: boolean = false) => {
@@ -71,10 +58,7 @@ const TileAnimator: React.FC<props> = ({ type, magnitude, id }) => {
           onAnimationEnd={(e) => { if(e.animationName == 'kaboom') deallocate(i)} }
         />
     var update = [...threadsRef.current];
-    if(more)
-      update.push(animation);
-    else
-      update[i] = animation;
+    update[i] = animation;
     setThreads(update);
   }
 
@@ -97,12 +81,8 @@ const TileAnimator: React.FC<props> = ({ type, magnitude, id }) => {
   }
   
   useEffect(() => {
-    if(threads.length > 1) {
-      console.log(id);
-      console.log('Threads:', threads);
-      console.log('Queue:', queue);
-    }
-  }, [threads])
+
+  }, [])
 
   return (
     <div>

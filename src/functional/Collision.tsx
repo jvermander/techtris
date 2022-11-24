@@ -6,18 +6,10 @@ import { TileType, Coordinate } from 'data/types';
   If the coordinate already belongs to another tile, but is in the falling tetro's position,
   then this is not considered a collision, returning false (a tetro cannot collide with itself).
 
-  Can optionally skip the above check by providing null in place of the position (default behavior).
 */
-export const isCollision = (toCheck: Coordinate, grid: TileType[][], position: Coordinate[] | null = null): boolean => {
-  if(toCheck.y < 0 || toCheck.y >= Tetris.ACTUAL_ROWS || toCheck.x < 0 || toCheck.x >= Tetris.COLS)
+export const isCollision = (toCheck: Coordinate, grid: TileType[][], chkSpawn: boolean = false): boolean => {
+  if(!chkSpawn && (toCheck.y < 0 || toCheck.y >= Tetris.ACTUAL_ROWS || toCheck.x < 0 || toCheck.x >= Tetris.COLS))
     return true;
-
-  if(position) {
-    for(const p of position) {
-      if(toCheck.y == p.y && toCheck.x == p.x)
-        return false;
-    }
-  }
 
   return grid[toCheck.y][toCheck.x] != Tetris.EMPTY_TILE;
 }
