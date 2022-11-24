@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, LegacyRef } from 'react'
 import { Grid, Greeting } from 'components'
 import { GameStage } from 'data/types';
+import reactlogo from 'assets/images/react.png';
 import './App.css'
 
 function App() {
@@ -10,10 +11,11 @@ function App() {
   return (
     <>
       <div ref={ref as LegacyRef<HTMLDivElement>} id='bg'/>
-      <div className='root' onClick={(e) => setStage('play')}>
-        <Greeting st={[ stage, setStage ]} display={stage === 'setup' ? 'flex' : 'none'} />
+      <div className='root'>
+        <Greeting st={[ stage, setStage ]} />
         <Grid st={[stage, setStage ]} />
       </div>
+      <div className='watermark'>Powered by React<img width='20px' style={{marginLeft: '0.5em'}} src={reactlogo} /></div>
     </>
   );
 }

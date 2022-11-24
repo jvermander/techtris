@@ -96,6 +96,8 @@ const Grid: React.FC<props> = ({ st }) => {
   }, [level])
 
   useEffect(() => {
+    if(stage === 'play')
+      newGame();
     console.log('Game stage:', stage);
   }, [stage])
 
@@ -107,7 +109,7 @@ const Grid: React.FC<props> = ({ st }) => {
   
   return(
     <>
-      <div id='board' onClick={() => newGame() }>
+      <div id='board'>
       <FallingTetro gr={[grid, updateGrid]} st={[stage, setStage]} level={level} />
         {grid.map((row, i) => {
           return ( i >= Tetris.ACTUAL_ROWS - Tetris.DISPLAY_ROWS ?

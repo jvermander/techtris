@@ -2,17 +2,23 @@
   height: var(--tileHeight);
   width: var(--tileWidth);
   will-change: background-color, opacity;
-  transform: translateZ(0);
 }
-
 
 .falling-tile {
   height: var(--tileHeight);
   width: var(--tileWidth);
   position: absolute;
-  display: none;
-  will-change: left, top, background-color;
-  transform: translateZ(0);
+  will-change: -moz-transform, -webkit-transform, transform, background-color, opacity;
+  transition: transform 200ms, opacity 200ms !important;
+  -moz-transition: transform 0.20s, opacity 0.20s !important;
+  -webkit-transition: transform 200ms, opacity 200ms !important;
+  /* transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);   */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+
 }
 
 .I, .O, .J, .L, .S, .Z, .T {

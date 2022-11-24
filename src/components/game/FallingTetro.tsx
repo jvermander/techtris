@@ -202,8 +202,8 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
 
   return (
     <div>
-      {position.map((p, i) => {
-        return <FallingTile type={type} coord={p} key={i}/>
+      {posRef.current.map((p, i) => {
+        return <FallingTile type={type} pos={p} key={i} id={i}/>
       })}
     </div>
   )
