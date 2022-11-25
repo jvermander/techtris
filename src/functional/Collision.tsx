@@ -85,7 +85,8 @@ export const findCompleteRows = (grid: TileType[][], position: Coordinate[]): nu
   for(const c of candidates) {
     var x = 0;
     while(x < Tetris.COLS && 
-      (grid[c.y][x] !== Tetris.EMPTY_TILE || position.includes({ x, y: c.y }))) {
+      (grid[c.y][x] !== Tetris.EMPTY_TILE || 
+       position.findIndex((p) => (p.y === c.y && p.x === x)) !== -1)) {
       x++;
     }
     // sorted insertion

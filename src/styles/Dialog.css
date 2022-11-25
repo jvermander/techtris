@@ -48,7 +48,7 @@
 }
 
 #tutorial {
-  font-size: 1.25rem;
+  font-size: 1rem;
   position: absolute;
   width: 90vw;
   display: flex;
@@ -56,7 +56,7 @@
   justify-content: space-around;
   align-items: center;
   margin-top: -4em;
-  padding: 1em;
+  padding: 1em 10em 1em 10em;
   opacity: 0;
   /* animation: fade-in 10s ease;
   animation-iteration-count: 1; */

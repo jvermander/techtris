@@ -14,11 +14,14 @@ type props = {
   ],
   st: [GameStage, React.Dispatch<React.SetStateAction<GameStage>>]
   level: number,
+  nx: [ next: TileType, setNext: React.Dispatch<React.SetStateAction<TileType>> ],
+  destroyPending: boolean
 }
 
-const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
+const FallingTetro: React.FC<props> = ({ gr, st, level, nx, destroyPending }) => {
   const [grid, updateGrid] = gr;
   const [stage, setStage] = st;
+  const [next, setNext] = nx;
 
   // state describing the current tetromino
   const [position, setPosition] = useState<Coordinate[]>([]);
@@ -31,35 +34,33 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
   const [time, setTime] = useState<number>(-1);
   const [gravity, setGravity] = useState<number>(Tetris.INIT_GRAVITY);
   const [gravityTemp, setGravityTemp] = useState<number>(gravity);
-  const [destroyPending, setDestroyPending] = useState<boolean>(false);
   const timeRef = useRef<number>(time);
-  const pendingRef = useRef<boolean>(destroyPending);
+  const [wait, setWait] = useState<boolean>(false);
+  const pendingRef = useRef<boolean>(wait);
   timeRef.current = time;
-  pendingRef.current = destroyPending;
+  pendingRef.current = wait;
 
   const [pause, setPause] = useState<boolean>(false);
   const pauseRef = useRef(pause);
   pauseRef.current = pause;
   
-  const updatePosition = (update: Coordinate[]): void => {
-    setPosition(update);
-  }
-
   const spawnTetro = (): void => {
-    var randomType = getRandomType();
-    // var randomType = 'I' as TileType;
-    console.log('Spawning', randomType);
-    const init = getRotation(randomType, { x: Tetris.SPAWN_COL, y: Tetris.SPAWN_ROW }, 0);
-    // const init = getRotation(randomType, { x: Tetris.COLS - 1, y: Tetris.SPAWN_ROW }, 1);
+    var queued = next === Tetris.EMPTY_TILE ? getRandomType() : next;
+    // var queued = 'I' as TileType;
+    console.log('Spawning', queued);
+    const init = getRotation(queued, { x: Tetris.SPAWN_COL, y: Tetris.SPAWN_ROW }, 0);
+    // const init = getRotation(next, { x: Tetris.COLS - 1, y: Tetris.SPAWN_ROW }, 1);
     setPosition(init);
-    setType(randomType);    
+    setType(queued);    
     setRotationIdx(0);
     // setRotationIdx(1);
     setTime(new Date().getTime());
+    setNext(getRandomType());
+    setWait(false);
 
     if(isSpawnBlocked(init)) {
       console.log('Game over!');
-      console.log('Final tetro is of type', randomType); // todo - render last spawn
+      console.log('Final tetro is of type', queued); // todo - render last spawn
       setStage('game_over');
     }
   };
@@ -83,18 +84,19 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
     An optional current position can be supplied if the caller believes it has a 
     more recent version of position (e.g. in timeout functions).
   */
-  const onTranslate = (x_step: number, y_step: number, current: Coordinate[] | null = null): boolean => {
+  const onTranslate = (x_step: number, y_step: number, refresh: boolean = true): Coordinate[] => {
     var update = new Array<Coordinate>();
-    for(const p of current ?? position) {
+    for(const p of posRef.current) {
       var newCoord: Coordinate = { x: p.x + x_step, y: p.y + y_step };
       if(!isCollision(newCoord, grid)) {
         update.push(newCoord);
       } else {
-        return false;
+        return [];
       }
     }
-    updatePosition(update);
-    return true;
+    if(refresh)
+      setPosition(update);
+    return update;
   }
 
   const onRotate = (step: number): boolean => {
@@ -111,7 +113,7 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
   }
 
   const rotate = (pivotIdx: number, numRotations: number, step: number): boolean => {
-    const pivot = position[pivotIdx];
+    const pivot = posRef.current[pivotIdx];
     const newRotationIdx = (rotationIdx + step + numRotations) % numRotations; 
     const update = getRotation(type, pivot, newRotationIdx);
     var i = 0;
@@ -122,14 +124,15 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
     }
 
     setRotationIdx(newRotationIdx);
-    updatePosition(update);
+    setPosition(update);
     return true;
   }
 
   const onDrop = (): void => {
     var fallDist = findYCollisionDist(grid, position);
-    onTranslate(0, fallDist);
-    setDestroyPending(true);
+    setWait(true);
+    var update = fallDist ? onTranslate(0, fallDist, false) : position;
+    updateGrid(update, type);
   }
 
   useEffect(() => {
@@ -158,34 +161,29 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
       if(pendingRef.current || timeRef.current != time || pauseRef.current || gravity <= 0)
         return; // quit in either case
 
-      var success = onTranslate(0, 1, posRef.current);
-      if(success) {
+      var update = onTranslate(0, 1);
+      if(update.length > 0) {
         setTime(time + gravity);
       } else { // tetro hit the ground, spawn another
+        console.log('Tetro hit the ground');
         updateGrid(posRef.current, type);
+        setWait(true);
       }
     }, gravity);
   }, [time])
 
   useEffect(() => {
-    // console.log('Position:', position);
-    if(destroyPending) {
-      updateGrid(position, type);
-    }
-  }, [position])
-
-  useEffect(() => {
     if(stage === 'setup')
       return;
-    setDestroyPending(false);
-    spawnTetro();
+    if(!destroyPending) {
+      spawnTetro();
+    }
   }, [grid]);
 
   useEffect(() => {
     document.onkeydown = (e) => {
-      if(stage !== 'play' || destroyPending)
+      if(stage !== 'play' || pendingRef.current)
         return;
-      console.log(e.key)
       switch(e.key) {
         // case 'ArrowUp': onTranslate(0, -1); break; // for debugging
         case 'ArrowDown': onTranslate(0, 1); break;
@@ -198,7 +196,7 @@ const FallingTetro: React.FC<props> = ({ gr, st, level }) => {
         default: return;
       }
     }
-  }, [onTranslate, onRotate, onDrop, destroyPending])
+  }, [onTranslate, onRotate, onDrop, pendingRef.current])
 
   return (
     <div>
