@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import 'styles/Modal.css';
 
 type props = {
   display?: string,

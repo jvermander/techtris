@@ -1,0 +1,36 @@
+#board, #next-queue {
+  border: 1px solid purple;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+#next-queue {
+  margin: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+#board {
+  position: relative;
+  /* box-shadow: 0 0 20px 5px purple; */
+  transition: transform;
+  transition-duration: 2s;
+  transition-timing-function: ease;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+#hud {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.queued-tile {
+  position: absolute;
+}

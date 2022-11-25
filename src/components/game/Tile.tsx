@@ -7,16 +7,16 @@ import { Tetris } from 'data/Tetris';
 type props = {
   type: TileType;
   magnitude: number;
-  tetris: boolean;
+  isTetris: boolean;
 }
 
-const Tile: React.FC<props> = ({ type, magnitude, tetris }) => {
+const Tile: React.FC<props> = ({ type, magnitude, isTetris }) => {
   const ref = useRef<HTMLDivElement>();
 
   useEffect(() => {
-    if(tetris && ref.current && type !== Tetris.EMPTY_TILE)
+    if(isTetris && ref.current && type !== Tetris.EMPTY_TILE)
       ref.current.style.animation = 'tetris var(--tetris-duration) ease-out';
-  }, [tetris])
+  }, [isTetris])
 
   return (
     <div 

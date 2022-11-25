@@ -3,10 +3,13 @@ import { Tetris } from 'data/Tetris';
 import { TileType, Coordinate, GameStage } from 'data/types';
 import { findCompleteRows, findYCollisions } from 'functional';
 import { Tile, FallingTetro } from 'components';
-import 'styles/Grid.css';
+import 'styles/HUD.css';
 
 type props = {
-  st: [ stage: GameStage, setStage: React.Dispatch<React.SetStateAction<GameStage>> ]
+  st: [ stage: GameStage, setStage: React.Dispatch<React.SetStateAction<GameStage>> ],
+  nx: [ next: TileType, setNext: React.Dispatch<React.SetStateAction<TileType>> ],
+  lv: [ level: number, setLevel: React.Dispatch<React.SetStateAction<number>>],
+  sc: [ score: number, setScore: React.Dispatch<React.SetStateAction<number>>]
 }
 
 const initGrid = (development: boolean = false) => {
@@ -32,13 +35,16 @@ const initMagnitude = () => {
   return magnitude;
 }
 
-const Grid: React.FC<props> = ({ st }) => {
-  const [grid, setGrid] = useState<TileType[][]>(initGrid());
-  const [level, setLevel] = useState<number>(0);
+const Grid: React.FC<props> = ({ st, nx, lv, sc }) => {
   const [stage, setStage] = st;
+  const [next, setNext] = nx;
+  const [level, setLevel] = lv;
+  const [score, setScore] = sc;
+
+  const [grid, setGrid] = useState<TileType[][]>(initGrid());
   const [toDestroy, setToDestroy] = useState<number[]>([]);
   const [magnitude, setMagnitude] = useState<number[][]>(initMagnitude());
-  const [tetris, setTetris] = useState(false);  
+  const [isTetris, setIsTetris] = useState(false);  
 
   useEffect(() => {
     document.documentElement.style.setProperty('--tetris-duration', `${Tetris.TETRIS_DURATION}ms`);
@@ -59,7 +65,7 @@ const Grid: React.FC<props> = ({ st }) => {
     setMagnitude(updateMag);
     setToDestroy(complete);
     if(complete.length === 4)
-      setTetris(true);
+      setIsTetris(true);
     setGrid(update);
   }, [grid]);
 
@@ -80,7 +86,7 @@ const Grid: React.FC<props> = ({ st }) => {
     }
     setMagnitude(updateMag);
     setToDestroy([]);
-    setTetris(false);
+    setIsTetris(false);
   }
 
   const newGame = () => {
@@ -110,7 +116,12 @@ const Grid: React.FC<props> = ({ st }) => {
   return(
     <>
       <div id='board'>
-      <FallingTetro gr={[grid, updateGrid]} st={[stage, setStage]} level={level} />
+      <FallingTetro 
+        gr={[grid, updateGrid]} 
+        st={[stage, setStage]} 
+        level={level} nx={[next, setNext]} 
+        destroyPending={toDestroy.length > 0}
+      />
         {grid.map((row, i) => {
           return ( i >= Tetris.ACTUAL_ROWS - Tetris.DISPLAY_ROWS ?
             <div key={`k${i}`} className='row'>
@@ -120,7 +131,7 @@ const Grid: React.FC<props> = ({ st }) => {
                     key={`k${i}${j}`} 
                     type={grid[i][j]}
                     magnitude={magnitude[i][j]}
-                    tetris={tetris}
+                    isTetris={isTetris}
                   />
                   );
                 })}
