@@ -43,7 +43,7 @@ export const Tetris = {
   TETRIS_MODE_DURATION: 10000,
   TETRIS_MODE_EXIT_TRANSITION: 250,
 
-  INIT_GRAVITY: 250
+  INIT_GRAVITY: 150
 };
 
 // for randomization

@@ -1,6 +1,6 @@
 import { TileType, Coordinate } from 'data/types';
 
-export const getRotation = (type: TileType, p: Coordinate, i: number) => {
+export const getRotation = (type: TileType, p: Coordinate, i: number): Coordinate[] => {
   switch(type) {
     case 'O': return getORotation(p, i);
     case 'I': return getIRotation(p, i);

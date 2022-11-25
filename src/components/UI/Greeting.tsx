@@ -28,7 +28,7 @@ const Greeting: React.FC<props> = ({ st }) => {
       </div>
       <div id='tutorial' style={{ visibility: tutorial ? 'visible' : 'hidden', opacity: tutorial ? '1' : '0', zIndex: 2 }} >
         <div style={{ marginBottom: '3em' }}>
-          They say that Tetris is elegant enough such that an extra-terrestrial could quickly learn all its rules without any instruction.
+          They say that <span style={{ color: 'purple' }}>Tetris</span> is elegant enough such that an extra-terrestrial could quickly learn all its rules without any instruction.
         </div>
         <div style={{ marginBottom: '2em' }}>
         For fun, let's pretend you are an alien who has stumbled upon a strange human game.
@@ -39,8 +39,8 @@ const Greeting: React.FC<props> = ({ st }) => {
         We'll skip the tedious part and tell you the controls, though.
         </div>
         <br/>
-        <div style={{display: 'flex', flexDirection: 'row', width: '90%', justifyContent: 'center'}}>
-          <div style={{ display: 'flex', flexDirection: 'column', flexBasis: '33%', justifyContent: 'center', alignItems: 'center'}}>
+        <div style={{display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'space-around', marginTop: '3em'}}>
+          <div style={{ display: 'flex', flexDirection: 'column', flexBasis: '33%', justifyContent: 'center', alignItems: 'center', marginRight: '5em'}}>
             <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: '1em'}}>
               <div className='tutorial-key' style={{margin: '1em 0.5em 1em 1em'}}>Z</div>
               <div className='tutorial-key' style={{margin: '1em 1em 1em 0.5em'}}>X</div>
@@ -56,7 +56,7 @@ const Greeting: React.FC<props> = ({ st }) => {
             </div>
             Drop
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', flexBasis: '33%', justifyContent: 'center', alignItems: 'center'}}>
+          <div style={{ display: 'flex', flexDirection: 'column', flexBasis: '33%', justifyContent: 'center', alignItems: 'center', marginLeft: '5em'}}>
             <div style={{display: 'flex', flexDirection: 'row', marginBottom: '1em'}}>
               <div className='tutorial-key' style={{margin: '1em 0.5em 1em 1em'}}>🠈</div>
               <div className='tutorial-key' style={{margin: '1em 0.5em 1em 0.5em'}}>🠋</div>
