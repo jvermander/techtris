@@ -44,10 +44,6 @@ const FallingTetro: React.FC<props> = ({ gr, st, level, nx, destroyPending }) =>
   const pauseRef = useRef(pause);
   pauseRef.current = pause;
   
-  const updatePosition = (update: Coordinate[]): void => {
-    setPosition(update);
-  }
-
   const spawnTetro = (): void => {
     var queued = next === Tetris.EMPTY_TILE ? getRandomType() : next;
     // var queued = 'I' as TileType;
@@ -61,7 +57,7 @@ const FallingTetro: React.FC<props> = ({ gr, st, level, nx, destroyPending }) =>
     setTime(new Date().getTime());
     setNext(getRandomType());
     setWait(false);
-    
+
     if(isSpawnBlocked(init)) {
       console.log('Game over!');
       console.log('Final tetro is of type', queued); // todo - render last spawn
@@ -99,7 +95,7 @@ const FallingTetro: React.FC<props> = ({ gr, st, level, nx, destroyPending }) =>
       }
     }
     if(refresh)
-      updatePosition(update);
+      setPosition(update);
     return update;
   }
 
@@ -117,7 +113,7 @@ const FallingTetro: React.FC<props> = ({ gr, st, level, nx, destroyPending }) =>
   }
 
   const rotate = (pivotIdx: number, numRotations: number, step: number): boolean => {
-    const pivot = position[pivotIdx];
+    const pivot = posRef.current[pivotIdx];
     const newRotationIdx = (rotationIdx + step + numRotations) % numRotations; 
     const update = getRotation(type, pivot, newRotationIdx);
     var i = 0;
@@ -128,7 +124,7 @@ const FallingTetro: React.FC<props> = ({ gr, st, level, nx, destroyPending }) =>
     }
 
     setRotationIdx(newRotationIdx);
-    updatePosition(update);
+    setPosition(update);
     return true;
   }
 

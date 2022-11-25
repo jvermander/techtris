@@ -20,7 +20,7 @@ const FallingTile: React.FC<props> = ({ type, pos, id }) => {
 
     if(origin) {
       ref.current.style.transform = 
-        `translate(${(pos.x - origin.x) * 2.2}em, ${(pos.y - origin.y) * 1.9}em)`;
+        `translate(${(pos.x - origin.x) * 2.2}em, ${(pos.y - origin.y) * 1.9}em) translateZ(0)`;
       if(pos.y < 3) {
         ref.current.style.opacity = '0';
       } else {

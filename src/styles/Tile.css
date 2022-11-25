@@ -10,12 +10,11 @@
   position: absolute;
   will-change: -moz-transform, -webkit-transform, transform, background-color;
   transition: transform 0.2s, opacity 0.2s !important;
-  /* -moz-transition: transform 0.20s, opacity 0.20s !important; */
-  /* -webkit-transition: transform 200ms, opacity 200ms !important; */
+  -moz-transition: transform 0.20s, opacity 0.20s !important;
+  -webkit-transition: transform 200ms, opacity 200ms !important;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility: hidden;
-
 }
 
 .I, .O, .J, .L, .S, .Z, .T {
@@ -40,6 +39,8 @@
 
 .kaboom {
   animation: kaboom;
+  -webkit-animation: kaboom;
+  -moz-animation: kaboom;
   opacity: 0;
   animation-timing-function: ease-out;
   animation-duration: var(--kaboom-duration);
@@ -53,10 +54,14 @@
 @keyframes kaboom {
   0% { 
     opacity: 1;
-    transform: rotate(0deg) translate(0px, 0px);
+    transform: rotate(0deg) translate(0px, 0px) translateZ(0);
+    -webkit-transform: rotate(0deg) translate(0px, 0px) translateZ(0);
+    -moz-transform: rotate(0deg) translate(0px, 0px) translateZ(0);
   } 
   100% {
-    transform: rotate(var(--spin)) translate(var(--distX), var(--distY)) scale(1.5, 1.5);
+    transform: rotate(var(--spin)) translate(var(--distX), var(--distY)) scale(1.5, 1.5) translateZ(0);
+    -webkit-transform: rotate(var(--spin)) translate(var(--distX), var(--distY)) scale(1.5, 1.5) translateZ(0);
+    -moz-transform: rotate(var(--spin)) translate(var(--distX), var(--distY)) scale(1.5, 1.5) translateZ(0);
   }
 }
 
