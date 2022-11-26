@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Tetris } from 'data/Tetris';
+import { Tetris, scoreMultiplierByLines } from 'data/Tetris';
 import { TileType, Coordinate, GameStage } from 'data/types';
 import { findCompleteRows, findYCollisions } from 'functional';
 import { Tile, FallingTetro } from 'components';
@@ -45,6 +45,7 @@ const Grid: React.FC<props> = ({ st, nx, lv, sc }) => {
   const [toDestroy, setToDestroy] = useState<number[]>([]);
   const [magnitude, setMagnitude] = useState<number[][]>(initMagnitude());
   const [isTetris, setIsTetris] = useState(false);  
+  const [linesCleared, setLinesCleared] = useState<number>(0);
 
   useEffect(() => {
     document.documentElement.style.setProperty('--tetris-duration', `${Tetris.TETRIS_DURATION}ms`);
@@ -56,16 +57,22 @@ const Grid: React.FC<props> = ({ st, nx, lv, sc }) => {
       update[p.y][p.x] = type as TileType;
     }
     var complete = findCompleteRows(grid, position);
-    var updateMag = [...magnitude];
-    for(const i of complete) {
-      for(var j = 0; j < Tetris.COLS; j++ ) {
-        updateMag[i][j] = complete.length;
+    var additionalScore = 0;
+    if(complete.length > 0) {
+      var updateMag = [...magnitude];
+      for(const i of complete) {
+        for(var j = 0; j < Tetris.COLS; j++ ) {
+          updateMag[i][j] = complete.length;
+        }
       }
+      setMagnitude(updateMag);
+      setToDestroy(complete);
+      additionalScore = scoreMultiplierByLines[complete.length] * (level + 1)
+      setLinesCleared(prev => prev + complete.length);
+      if(complete.length === 4)
+        setIsTetris(true);
     }
-    setMagnitude(updateMag);
-    setToDestroy(complete);
-    if(complete.length === 4)
-      setIsTetris(true);
+    setScore(prev => prev + Tetris.BASE_PLACEMENT_SCORE + additionalScore);
     setGrid(update);
   }, [grid]);
 
@@ -88,6 +95,12 @@ const Grid: React.FC<props> = ({ st, nx, lv, sc }) => {
     setToDestroy([]);
     setIsTetris(false);
   }
+
+  useEffect(() => {
+    if(linesCleared >= level * 10 + 10)
+      setLevel(prev => prev + 1);
+    console.log('Lines cleared', linesCleared);
+  }, [linesCleared])
 
   const newGame = () => {
     if(stage === 'game_over')

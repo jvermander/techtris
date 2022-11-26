@@ -17,9 +17,26 @@ const HUD: React.FC<props> = ({ st }) => {
   return (
     <div id='hud'>
       <Grid st={st} nx={[next, setNext]} lv={[level, setLevel]} sc={[score, setScore]} />
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div 
+        style={{ 
+          display: stage === 'setup' ? 'none' : 'flex',
+          flexDirection: 'column', 
+          alignItems: 'flex-start',
+          margin: '1em', 
+          position: 'absolute', 
+          right: '20em'
+        }}>
         <NextQueue nextType={next} />
+        <div className='hud-item' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center',  marginTop: '1em'}}>
+          <div style={{padding: '1em 1em 0.5em 1em', fontSize: '2rem'}}>{`${level}`.padStart(2, '0')}</div>
+          <div style={{fontSize: '1.25rem', padding: '0.5em'}}>Level</div>
+        </div>
+        <div className='hud-item' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '1em'}}>
+          <div style={{padding: '1em 1em 0.5em 1em', fontSize: '1rem'}}>{score}</div>
+          <div style={{fontSize: '1.25rem', padding: '0.5em'}}>Score</div>
+        </div>
       </div>
+      
     </div>
   );
 }

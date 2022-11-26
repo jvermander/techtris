@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FallingTile } from 'components';
-import { Tetris, roulette } from 'data/Tetris';
+import { Tetris, roulette, gravityByLevel } from 'data/Tetris';
 import { TileType, Coordinate, GameStage } from 'data/types';
 import { isCollision, findYCollisionDist, getRotation, findYCollisions } from 'functional';
 
@@ -32,7 +32,7 @@ const FallingTetro: React.FC<props> = ({ gr, st, level, nx, destroyPending }) =>
 
   // state for periodically updating the display
   const [time, setTime] = useState<number>(-1);
-  const [gravity, setGravity] = useState<number>(Tetris.INIT_GRAVITY);
+  const [gravity, setGravity] = useState<number>(0);
   const [gravityTemp, setGravityTemp] = useState<number>(gravity);
   const timeRef = useRef<number>(time);
   const [wait, setWait] = useState<boolean>(false);
@@ -47,7 +47,6 @@ const FallingTetro: React.FC<props> = ({ gr, st, level, nx, destroyPending }) =>
   const spawnTetro = (): void => {
     var queued = next === Tetris.EMPTY_TILE ? getRandomType() : next;
     // var queued = 'I' as TileType;
-    console.log('Spawning', queued);
     const init = getRotation(queued, { x: Tetris.SPAWN_COL, y: Tetris.SPAWN_ROW }, 0);
     // const init = getRotation(next, { x: Tetris.COLS - 1, y: Tetris.SPAWN_ROW }, 1);
     setPosition(init);
@@ -179,6 +178,11 @@ const FallingTetro: React.FC<props> = ({ gr, st, level, nx, destroyPending }) =>
       spawnTetro();
     }
   }, [grid]);
+
+  useEffect(() => {
+    setGravity(gravityByLevel[level]);
+    console.log('Level reached:', 0);
+  }, [level])
 
   useEffect(() => {
     document.onkeydown = (e) => {

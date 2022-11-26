@@ -43,7 +43,9 @@ export const Tetris = {
   TETRIS_MODE_DURATION: 10000,
   TETRIS_MODE_EXIT_TRANSITION: 250,
 
-  INIT_GRAVITY: 150
+  INIT_GRAVITY: 150,
+
+  BASE_PLACEMENT_SCORE: 10
 };
 
 // for randomization
@@ -56,3 +58,30 @@ export const roulette = [
   Tetris.T_TILE,
   Tetris.Z_TILE
 ];
+
+export const gravityByLevel = [ //todo animation speed
+  800,
+  717,
+  633,
+  550,
+  467,
+  383,
+  320,
+  280,
+  200,
+  150,
+  100,
+  80,
+  50,
+  30,
+  17,
+
+]
+
+export const scoreMultiplierByLines = [
+  0,
+  40,
+  100,
+  300,
+  1200
+]
