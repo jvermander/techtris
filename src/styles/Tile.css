@@ -15,6 +15,7 @@
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility: hidden;
+  display: none;
 }
 
 .I, .O, .J, .L, .S, .Z, .T {
@@ -54,14 +55,14 @@
 @keyframes kaboom {
   0% { 
     opacity: 1;
-    transform: rotate(0deg) translate(0px, 0px) translateZ(0);
-    -webkit-transform: rotate(0deg) translate(0px, 0px) translateZ(0);
-    -moz-transform: rotate(0deg) translate(0px, 0px) translateZ(0);
+    transform: rotate(0deg) translate(0px, 0px);
+    -webkit-transform: rotate(0deg) translate(0px, 0px);
+    -moz-transform: rotate(0deg) translate(0px, 0px);
   } 
   100% {
-    transform: rotate(var(--spin)) translate(var(--distX), var(--distY)) scale(1.5, 1.5) translateZ(0);
-    -webkit-transform: rotate(var(--spin)) translate(var(--distX), var(--distY)) scale(1.5, 1.5) translateZ(0);
-    -moz-transform: rotate(var(--spin)) translate(var(--distX), var(--distY)) scale(1.5, 1.5) translateZ(0);
+    transform: rotate(var(--spin)) translate(var(--distX), var(--distY)) scale(1.5, 1.5);
+    -webkit-transform: rotate(var(--spin)) translate(var(--distX), var(--distY)) scale(1.5, 1.5);
+    -moz-transform: rotate(var(--spin)) translate(var(--distX), var(--distY)) scale(1.5, 1.5);
   }
 }
 

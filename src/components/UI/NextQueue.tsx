@@ -38,7 +38,7 @@ const NextQueue: React.FC<props> = ({ nextType }) => {
     <div id='next-queue'>
       <div style={{ position: 'relative', width: '10em', height: '6em' }}>
         {getRotation(nextType, { x: 2.25, y: 1.6 }, 0).map((p, i) => {
-          return <QueuedTile type={nextType} style={getCenterStyle(nextType, p)}/>
+          return <QueuedTile id={`${i}`} type={nextType} style={getCenterStyle(nextType, p)}/>
         })}
       </div>
       <div style={{fontSize: '1.25rem', padding: '0.5em'}}>Next</div>
