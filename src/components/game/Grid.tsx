@@ -100,7 +100,7 @@ const Grid: React.FC<props> = ({ st, nx, lv, sc }) => {
 
   useEffect(() => {
     console.log()
-    if((level <= 10 && linesCleared >= level * 10 + 10) || (level > 10 && linesCleared >= (2 * level - 9) * 10))
+    if((level <= 10 && linesCleared >= Math.max((level-1) * 10 + 10, 10)) || (level > 10 && linesCleared >= (2 * level - 9) * 10))
       setLevel(prev => prev + 1);
     console.log('Lines cleared', linesCleared);
   }, [linesCleared])
