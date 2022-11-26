@@ -36,13 +36,6 @@
   cursor:pointer;
 }
 
-.alien-head {
-  position: absolute;
-  z-index: -1;
-  top: -1em;
-  height: 7em;
-}
-
 .logo {
   height: 2em;
 }
@@ -76,13 +69,4 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-@keyframes fade-in {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
 }

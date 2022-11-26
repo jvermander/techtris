@@ -42,8 +42,6 @@ const FallingTile: React.FC<props> = ({ type, pos, level }) => {
       ref.current.style.setProperty('--falling-transition-duration', '50ms');
     else if(level >= 13)
       ref.current.style.setProperty('--falling-transition-duration', '20ms');
-
-
   }, [level])
 
   return (

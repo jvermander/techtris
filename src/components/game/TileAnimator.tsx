@@ -69,13 +69,6 @@ const TileAnimator: React.FC<props> = ({ type, magnitude }) => {
     setThreads(update);
   }
 
-  const getRandSpin = () => {
-    var min = Kaboom.MIN_SPIN;
-    var max = Kaboom.MAX_SPIN;
-    var spin = Math.floor(Math.random() * (max - min) + min) * -1;
-    return `${spin}deg`;
-  }
-
   const getRandVelocity = (axis: 'x' | 'y', magnitude: number): string => {
     var velocity, min, max;
     min = axis === 'x' ? Kaboom.MIN_X[magnitude - 1] : Kaboom.MIN_Y[magnitude - 1];

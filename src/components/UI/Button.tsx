@@ -5,9 +5,10 @@ type props = {
   label: string;
   style?: React.CSSProperties;
   onClick: (e: React.MouseEvent) => void
+  className?: string;
 }
 
-const Button: React.FC<props> = ({ label, style, onClick }) => {
+const Button: React.FC<props> = ({ label, style, onClick, className }) => {
 
   const onMouseEnter = (e: any) => {
     e.target.style.transform = 'translate(5px, 5px)';
@@ -20,7 +21,7 @@ const Button: React.FC<props> = ({ label, style, onClick }) => {
   }
 
   return (
-    <div className='btn-ctn' style={style} onClick={onClick}>
+    <div className={`btn-ctn ${className}`} style={style} onClick={onClick}>
       {label}
     </div>
   );
