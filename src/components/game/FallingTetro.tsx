@@ -44,6 +44,15 @@ const FallingTetro: React.FC<props> = ({ gr, st, level, nx, destroyPending }) =>
   const pauseRef = useRef(pause);
   pauseRef.current = pause;
   
+  const resetTetro = () => {
+    setPosition([]);
+    setType(Tetris.EMPTY_TILE);
+    setRotationIdx(0);
+    setTime(-1);
+    setGravity(0);
+    setWait(false);
+  }
+
   const spawnTetro = (): void => {
     var queued = next === Tetris.EMPTY_TILE ? getRandomType() : next;
     // var queued = 'I' as TileType;
@@ -134,7 +143,9 @@ const FallingTetro: React.FC<props> = ({ gr, st, level, nx, destroyPending }) =>
   }
 
   useEffect(() => {
-    if(stage === 'play')
+    if(stage === 'setup')
+      resetTetro();
+    else if(stage === 'play')
       spawnTetro();
   }, [stage])
 

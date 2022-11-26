@@ -46,7 +46,7 @@ export const Tetris = {
 
   INIT_GRAVITY: 150,
 
-  BASE_PLACEMENT_SCORE: 10
+  BASE_PLACEMENT_SCORE: 11
 };
 
 // for randomization
