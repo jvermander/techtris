@@ -22,7 +22,6 @@
 .I, .O, .J, .L, .S, .Z, .T {
   border: 1px solid black;
   /* border-radius: 2px; */
-  box-shadow: inset 0 0 1px 1px white;
   transition: background-color 0.3s ease;
 }
 
@@ -66,30 +65,18 @@
   }
 }
 
-.I {
+.I, .O, .T {
   background-color: white;
+  border: 5px double var(--colorB);
 }
 
-.O {
-  background-color: red;
+.S, .L {
+  background-color: var(--colorA);
+  box-shadow: inset 0 0 1px 1px white;
+
 }
 
-.J {
-  background-color: blue;
-}
-
-.L {
-  background-color: green;
-}
-
-.S {
-  background-color: yellow;
-}
-
-.Z {
-  background-color: purple;
-}
-
-.T {
-  background-color: cyan;
+.Z, .J {
+  background-color: var(--colorB);
+  box-shadow: inset 0 0 1px 1px white;
 }

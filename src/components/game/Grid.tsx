@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Tetris, scoreMultiplierByLines } from 'data/Tetris';
+import { Tetris, scoreMultiplierByLines, colorByTypeByLevel } from 'data/Tetris';
 import { TileType, Coordinate, GameStage } from 'data/types';
 import { findCompleteRows, findYCollisions } from 'functional';
 import { Tile, FallingTetro } from 'components';
@@ -117,6 +117,8 @@ const Grid: React.FC<props> = ({ st, nx, lv, sc }) => {
     if(!level)
       return;
     console.log(`Now on level ${level}`);
+    document.documentElement.style.setProperty('--colorA', colorByTypeByLevel['I'][level]);
+    document.documentElement.style.setProperty('--colorB', colorByTypeByLevel['Z'][level]);
   }, [level])
 
   useEffect(() => {
