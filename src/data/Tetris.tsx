@@ -42,6 +42,7 @@ export const Tetris = {
   TETRIS_DURATION: 250,
   TETRIS_MODE_DURATION: 10000,
   TETRIS_MODE_EXIT_TRANSITION: 250,
+  FALLING_TRANSITION_DURATION: 200,
 
   INIT_GRAVITY: 150,
 
@@ -75,7 +76,6 @@ export const gravityByLevel = [ //todo animation speed
   50,
   30,
   17,
-
 ]
 
 export const scoreMultiplierByLines = [

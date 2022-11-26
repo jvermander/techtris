@@ -12,7 +12,7 @@ type props = {
   sc: [ score: number, setScore: React.Dispatch<React.SetStateAction<number>>]
 }
 
-const initGrid = (development: boolean = true) => {
+const initGrid = (development: boolean = false) => {
   var grid : TileType[][] = new Array<Array<TileType>>(Tetris.ACTUAL_ROWS);
 
   for(var i = 0; i < Tetris.ACTUAL_ROWS; i++) {
@@ -49,6 +49,8 @@ const Grid: React.FC<props> = ({ st, nx, lv, sc }) => {
 
   useEffect(() => {
     document.documentElement.style.setProperty('--tetris-duration', `${Tetris.TETRIS_DURATION}ms`);
+    document.documentElement.style.setProperty('--falling-transition-duration', `${Tetris.FALLING_TRANSITION_DURATION}ms`);
+    
   }, [])
 
   const updateGrid = useCallback((position: Coordinate[], type: TileType): void => {
@@ -97,7 +99,7 @@ const Grid: React.FC<props> = ({ st, nx, lv, sc }) => {
   }
 
   useEffect(() => {
-    if(linesCleared >= level * 10 + 10)
+    if((level <= 10 && linesCleared >= level * 10 + 10) || (linesCleared >= (2 * level - 9) * 10))
       setLevel(prev => prev + 1);
     console.log('Lines cleared', linesCleared);
   }, [linesCleared])

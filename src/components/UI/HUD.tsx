@@ -11,7 +11,7 @@ type props = {
 const HUD: React.FC<props> = ({ st }) => {
   const [stage, setStage] = st;
   const [next, setNext] = useState<TileType>(Tetris.EMPTY_TILE);
-  const [level, setLevel] = useState<number>(0);
+  const [level, setLevel] = useState<number>(12);
   const [score, setScore] = useState<number>(0);
 
   return (

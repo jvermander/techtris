@@ -49,6 +49,7 @@ body {
   --kaboom-duration: 0;
   --tetris-duration: 0;
   --tetris-mode-exit-transition: 0;
+  --falling-transition-duration: 0;
 }
 
 .watermark {

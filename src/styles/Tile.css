@@ -9,9 +9,10 @@
   width: var(--tileWidth);
   position: absolute;
   will-change: -moz-transform, -webkit-transform, transform, background-color;
-  transition: transform 0.2s, opacity 0.2s !important;
-  -moz-transition: transform 0.20s, opacity 0.20s !important;
-  -webkit-transition: transform 200ms, opacity 200ms !important;
+  transition: transform var(--falling-transition-duration), opacity var(--falling-transition-duration) !important;
+  -moz-transition: transform var(--falling-transition-duration), opacity var(--falling-transition-duration) !important;
+  -webkit-transition: transform var(--falling-transition-duration), opacity var(--falling-transition-duration) !important;
+  transition-timing-function: linear;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility: hidden;

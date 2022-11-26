@@ -5,17 +5,16 @@ import 'styles/Tile.css';
 type props = {
   type: TileType;
   pos: Coordinate; 
-  id: number;
+  level: number;
 }
 
 // responsible for animating a tile in the current falling tetromino
-const FallingTile: React.FC<props> = ({ type, pos, id }) => {
+const FallingTile: React.FC<props> = ({ type, pos, level }) => {
   const ref = useRef<HTMLDivElement>();
   const [origin, setOrigin] = useState<Coordinate | null>(null);
 
   useEffect(() => {
-    var jsx = document.getElementById(`f${id}`);
-    if(!ref.current || !jsx)
+    if(!ref.current)
       return;
 
     if(origin) {
@@ -32,12 +31,23 @@ const FallingTile: React.FC<props> = ({ type, pos, id }) => {
       ref.current.style.display = 'flex';
       setOrigin(pos);
     }
-
   }, [pos])
+
+  useEffect(() => {
+    if(!ref.current)
+      return;
+    if(level >= 9 && level < 11) 
+      ref.current.style.setProperty('--falling-transition-duration', '100ms');
+    else if(level >= 11 && level < 13)
+      ref.current.style.setProperty('--falling-transition-duration', '50ms');
+    else if(level >= 13)
+      ref.current.style.setProperty('--falling-transition-duration', '20ms');
+
+
+  }, [level])
 
   return (
     <div
-      id={`f${id}`}
       ref={ref as LegacyRef<HTMLDivElement>}
       className={`falling-tile ${type}`}
     >
