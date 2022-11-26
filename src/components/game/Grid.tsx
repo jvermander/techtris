@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Tetris, scoreMultiplierByLines } from 'data/Tetris';
+import { Tetris, scoreMultiplierByLines, colorByTypeByLevel } from 'data/Tetris';
 import { TileType, Coordinate, GameStage } from 'data/types';
 import { findCompleteRows, findYCollisions } from 'functional';
 import { Tile, FallingTetro } from 'components';
@@ -100,7 +100,7 @@ const Grid: React.FC<props> = ({ st, nx, lv, sc }) => {
 
   useEffect(() => {
     console.log()
-    if((level <= 10 && linesCleared >= level * 10 + 10) || (level > 10 && linesCleared >= (2 * level - 9) * 10))
+    if((level <= 10 && linesCleared >= Math.max((level-1) * 10 + 10, 10)) || (level > 10 && linesCleared >= (2 * level - 9) * 10))
       setLevel(prev => prev + 1);
     console.log('Lines cleared', linesCleared);
   }, [linesCleared])
@@ -117,6 +117,8 @@ const Grid: React.FC<props> = ({ st, nx, lv, sc }) => {
     if(!level)
       return;
     console.log(`Now on level ${level}`);
+    document.documentElement.style.setProperty('--colorA', colorByTypeByLevel['I'][level]);
+    document.documentElement.style.setProperty('--colorB', colorByTypeByLevel['Z'][level]);
   }, [level])
 
   useEffect(() => {

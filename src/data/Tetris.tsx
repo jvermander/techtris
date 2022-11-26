@@ -84,3 +84,13 @@ export const scoreMultiplierByLines = [
   300,
   1200
 ]
+
+const colorByLevel = {
+  colorA: ['purple', 'purple', 'cyan', '#01b701', '#ff3b5c', '#E3B448', '#6fff6f', 'gold', 'red', '#4646ff', 'orange', 'silver', 'silver', 'red' ],
+  colorB: ['#2d002d', '#2d002d', 'blue', 'darkgreen', 'purple', '#3A6B35', '#de0094', '#4d004d', 'darkslategrey', '#67000c', 'blue', 'red', '#063232', 'black']
+}
+
+export const colorByTypeByLevel = {
+  'I': colorByLevel.colorA,
+  'Z': colorByLevel.colorB,
+}

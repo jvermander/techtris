@@ -49,6 +49,9 @@ body {
   --tetris-duration: 0;
   --tetris-mode-exit-transition: 0;
   --falling-transition-duration: 0;
+
+  --colorA: purple;
+  --colorB: #2d002d;
 }
 
 .watermark {
