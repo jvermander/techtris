@@ -75,7 +75,6 @@ export const gravityByLevel = [ //todo animation speed
   80,
   50,
   30,
-  17,
 ]
 
 export const scoreMultiplierByLines = [

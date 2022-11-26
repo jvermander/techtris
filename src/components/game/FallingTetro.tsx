@@ -171,7 +171,7 @@ const FallingTetro: React.FC<props> = ({ gr, st, level, nx, destroyPending }) =>
   }, [time])
 
   useEffect(() => {
-    if(stage === 'setup')
+    if(stage !== 'play' && stage !== 'game_over')
       return;
     if(!destroyPending) {
       spawnTetro();
@@ -180,7 +180,7 @@ const FallingTetro: React.FC<props> = ({ gr, st, level, nx, destroyPending }) =>
 
   useEffect(() => {
     setGravity(gravityByLevel[level]);
-    console.log('Level reached:', 0);
+    console.log('Level reached:', level);
   }, [level])
 
   useEffect(() => {

@@ -8,15 +8,15 @@ type props = {
   st: [ stage: GameStage, setStage: React.Dispatch<React.SetStateAction<GameStage>> ]
 }
 
-const Greeting: React.FC<props> = ({ st }) => {
+const GreetingDialog: React.FC<props> = ({ st }) => {
   const [stage, setStage] = st;
   const [tutorial, setTutorial] = useState<boolean>(false);
 
   return (
-    <div className={'greeting-ctn'} style={{ display: stage === 'setup' ? 'flex' : 'none' }}>
+    <div className={'greeting-ctn'} style={{ display: stage === 'greeting' ? 'flex' : 'none' }}>
       <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', transition: 'opacity 1s ease', opacity: tutorial ? '0' : '1', zIndex: 1}}>
         <img className='logo' src={logo} />
-        <Button label='Let me play.' style={{ marginBottom: '0.5em', marginTop: '4em' }} onClick={(e) => setStage('play')} />
+        <Button label='Let me play.' style={{ marginBottom: '0.5em', marginTop: '4em' }} onClick={(e) => setStage('setup')} />
         <Button label={'How do I play?'} style={{ marginTop: '0.5em' }} 
           onClick={(e) => {
             var board = document.getElementById('board');
@@ -83,4 +83,4 @@ const Greeting: React.FC<props> = ({ st }) => {
   );
 }
 
-export default Greeting;
+export default GreetingDialog;

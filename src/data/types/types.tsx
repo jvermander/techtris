@@ -3,4 +3,4 @@ export type Coordinate = {
   x: number, 
   y: number
 };
-export type GameStage = 'setup' | 'play' | 'game_over';
+export type GameStage = 'greeting' | 'setup' | 'play' | 'game_over';

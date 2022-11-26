@@ -43,7 +43,6 @@ body {
   --tileWidth: 2.2em;
 
   /* Must be set via JS */
-  --spin: 0deg;
   --distY: 0px;
   --distX: 0px; 
   --kaboom-duration: 0;

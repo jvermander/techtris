@@ -7,7 +7,8 @@ import TileAnimator from "./game/TileAnimator";
 import HUD from './UI/HUD';
 import NextQueue from './UI/NextQueue';
 import QueuedTile from './UI/QueuedTile';
-import Greeting from './UI/Greeting';
+import GreetingDialog from './UI/GreetingDialog';
+import LevelSelector from './UI/LevelSelector';
 import Modal from "./UI/Modal";
 import Button from "./UI/Button";
 
@@ -21,7 +22,8 @@ export {
   HUD,
   NextQueue,
   QueuedTile,
-  Greeting,
+  GreetingDialog,
+  LevelSelector,
   Modal,
   Button,
 };

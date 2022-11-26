@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { GameStage, TileType } from 'data/types';
 import { Tetris } from "data/Tetris";
-import { Grid, NextQueue } from 'components';
+import { Grid, NextQueue, LevelSelector } from 'components';
 import 'styles/HUD.css';
 
 type props = {
@@ -16,10 +16,11 @@ const HUD: React.FC<props> = ({ st }) => {
 
   return (
     <div id='hud'>
+      <LevelSelector st={ [stage, setStage ]} lv={[level, setLevel]} />
       <Grid st={st} nx={[next, setNext]} lv={[level, setLevel]} sc={[score, setScore]} />
       <div 
         style={{ 
-          display: stage === 'setup' ? 'none' : 'flex',
+          display: stage === 'greeting' ? 'none' : 'flex',
           flexDirection: 'column', 
           alignItems: 'flex-start',
           margin: '1em', 
