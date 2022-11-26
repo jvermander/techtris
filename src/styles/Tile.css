@@ -1,7 +1,7 @@
 .tile {
   height: var(--tileHeight);
   width: var(--tileWidth);
-  will-change: background-color;
+  will-change: background-color, -moz-transform, -webkit-transform, transform, opacity;
 }
 
 .falling-tile {
@@ -49,20 +49,19 @@
   border: none !important;
   box-shadow: none !important;
   position: absolute;
-  will-change: opacity, -moz-transform, -webkit-transform, transform;
 }
 
 @keyframes kaboom {
   0% { 
     opacity: 1;
-    transform: rotate(0deg) translate(0px, 0px);
-    -webkit-transform: rotate(0deg) translate(0px, 0px);
-    -moz-transform: rotate(0deg) translate(0px, 0px);
+    transform: translate(0px, 0px) translateZ(0);
+    -webkit-transform: translate(0px, 0px) translateZ(0);
+    -moz-transform: translate(0px, 0px) translateZ(0);
   } 
   100% {
-    transform: rotate(var(--spin)) translate(var(--distX), var(--distY)) scale(1.5, 1.5);
-    -webkit-transform: rotate(var(--spin)) translate(var(--distX), var(--distY)) scale(1.5, 1.5);
-    -moz-transform: rotate(var(--spin)) translate(var(--distX), var(--distY)) scale(1.5, 1.5);
+    transform: translate(var(--distX), var(--distY)) scale(1.5, 1.5) translateZ(0);
+    -webkit-transform: translate(var(--distX), var(--distY)) scale(1.5, 1.5) translateZ(0);
+    -moz-transform: translate(var(--distX), var(--distY)) scale(1.5, 1.5) translateZ(0);
   }
 }
 

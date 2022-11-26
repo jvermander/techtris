@@ -5,15 +5,13 @@ import 'styles/Tile.css';
 type props = {
   type: TileType;
   style?: React.CSSProperties;
-  id: string;
 }
 
-const QueuedTile: React.FC<props> = ({ type, style, id }) => {
+const QueuedTile: React.FC<props> = ({ type, style }) => {
   const ref = useRef<HTMLDivElement>();
 
   return (
     <div 
-      id={id}
       ref={ref as LegacyRef<HTMLDivElement>}
       className={`tile queued-tile ${type}`}
       style={style}
