@@ -105,9 +105,11 @@ const Grid: React.FC<props> = ({ st, nx, lv, sc }) => {
     console.log('Lines cleared', linesCleared);
   }, [linesCleared])
 
+  const resetGame = () => {
+    setGrid(initGrid());
+  }
+
   const newGame = () => {
-    if(stage === 'game_over')
-      setGrid(initGrid());
     setStage('play');
   }
 
@@ -118,9 +120,11 @@ const Grid: React.FC<props> = ({ st, nx, lv, sc }) => {
   }, [level])
 
   useEffect(() => {
-    if(stage === 'play')
-      newGame();
     console.log('Game stage:', stage);
+    if(stage === 'setup')
+      resetGame();
+    else if(stage === 'play')
+      newGame();
   }, [stage])
 
   useEffect(() => {
@@ -131,7 +135,7 @@ const Grid: React.FC<props> = ({ st, nx, lv, sc }) => {
   
   return(
     <>
-      <div id='board'>
+      <div id='board' style={{ opacity: stage === 'game_over' ? 0.4 : '' }}>
       <FallingTetro 
         gr={[grid, updateGrid]} 
         st={[stage, setStage]} 

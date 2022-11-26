@@ -8,6 +8,7 @@ import HUD from './UI/HUD';
 import NextQueue from './UI/NextQueue';
 import QueuedTile from './UI/QueuedTile';
 import GreetingDialog from './UI/GreetingDialog';
+import GameOverDialog from './UI/GameOverDialog';
 import LevelSelector from './UI/LevelSelector';
 import Modal from "./UI/Modal";
 import Button from "./UI/Button";
@@ -23,6 +24,7 @@ export {
   NextQueue,
   QueuedTile,
   GreetingDialog,
+  GameOverDialog,
   LevelSelector,
   Modal,
   Button,

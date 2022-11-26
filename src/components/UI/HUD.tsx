@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { GameStage, TileType } from 'data/types';
 import { Tetris } from "data/Tetris";
-import { Grid, NextQueue, LevelSelector } from 'components';
+import { Grid, NextQueue, LevelSelector, GameOverDialog } from 'components';
 import 'styles/HUD.css';
 
 type props = {
@@ -14,9 +14,22 @@ const HUD: React.FC<props> = ({ st }) => {
   const [level, setLevel] = useState<number>(0);
   const [score, setScore] = useState<number>(0);
 
+  const resetHUD = () => {
+    setNext(Tetris.EMPTY_TILE);
+    setLevel(0);
+    setScore(0);
+  }
+
+  useEffect(() => {
+    if(stage === 'setup') {
+      resetHUD();
+    }
+  }, [stage])
+
   return (
     <div id='hud'>
       <LevelSelector st={ [stage, setStage ]} lv={[level, setLevel]} />
+      <GameOverDialog st={ [stage, setStage ]} sc={[score, setScore]} />
       <Grid st={st} nx={[next, setNext]} lv={[level, setLevel]} sc={[score, setScore]} />
       <div 
         style={{ 
@@ -25,7 +38,8 @@ const HUD: React.FC<props> = ({ st }) => {
           alignItems: 'flex-start',
           margin: '1em', 
           position: 'absolute', 
-          right: '20em'
+          right: '20em',
+          opacity: stage === 'game_over' ? 0.4 : ''
         }}>
         <NextQueue nextType={next} />
         <div className='hud-item' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center',  marginTop: '1em'}}>
