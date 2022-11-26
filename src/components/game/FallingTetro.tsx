@@ -46,20 +46,19 @@ const FallingTetro: React.FC<props> = ({ gr, st, level, nx, destroyPending }) =>
   
   const spawnTetro = (): void => {
     var queued = next === Tetris.EMPTY_TILE ? getRandomType() : next;
-    // var queued = 'I' as TileType;
-    const init = getRotation(queued, { x: Tetris.SPAWN_COL, y: Tetris.SPAWN_ROW }, 0);
-    // const init = getRotation(next, { x: Tetris.COLS - 1, y: Tetris.SPAWN_ROW }, 1);
+    var queued = 'I' as TileType;
+    // const init = getRotation(queued, { x: Tetris.SPAWN_COL, y: Tetris.SPAWN_ROW }, 0);
+    const init = getRotation('I', { x: Tetris.COLS - 1, y: Tetris.SPAWN_ROW }, 1);
     setPosition(init);
     setType(queued);    
     setRotationIdx(0);
-    // setRotationIdx(1);
     setTime(new Date().getTime());
     setNext(getRandomType());
     setWait(false);
 
     if(isSpawnBlocked(init)) {
       console.log('Game over!');
-      console.log('Final tetro is of type', queued); // todo - render last spawn
+      console.log('Final tetro is of type', queued); 
       setStage('game_over');
     }
   };

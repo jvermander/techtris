@@ -12,7 +12,7 @@ type props = {
   sc: [ score: number, setScore: React.Dispatch<React.SetStateAction<number>>]
 }
 
-const initGrid = (development: boolean = false) => {
+const initGrid = (development: boolean = true) => {
   var grid : TileType[][] = new Array<Array<TileType>>(Tetris.ACTUAL_ROWS);
 
   for(var i = 0; i < Tetris.ACTUAL_ROWS; i++) {
