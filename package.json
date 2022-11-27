@@ -24,7 +24,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "devStart": "node test_server.tsx"
+    "devStart": "node test_server.tsx",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -45,6 +47,8 @@
     ]
   },
   "devDependencies": {
-    "assert-js": "^1.0.0"
-  }
+    "assert-js": "^1.0.0",
+    "gh-pages": "^4.0.0"
+  },
+  "homepage": "https://www.techtris.app"
 }

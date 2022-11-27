@@ -205,14 +205,14 @@ const FallingTetro: React.FC<props> = ({ gr, st, level, nx, destroyPending }) =>
       if(stage !== 'play' || pendingRef.current)
         return;
       switch(e.key) {
-        // case 'ArrowUp': onTranslate(0, -1); break; // for debugging
+        case 'ArrowUp': onRotate(1); break;
         case 'ArrowDown': onTranslate(0, 1); break;
         case 'ArrowLeft': onTranslate(-1, 0); break;
         case 'ArrowRight': onTranslate(1, 0); break;
         case 'z': onRotate(-1); break;
         case 'x': onRotate(1); break;
         case ' ': onDrop(); break;
-        case 'p': setPause(!pause); break;
+        // case 'p': setPause(!pause); break;
         default: return;
       }
     }

@@ -30,28 +30,27 @@ const HUD: React.FC<props> = ({ st }) => {
     <div id='hud'>
       <LevelSelector st={ [stage, setStage ]} lv={[level, setLevel]} />
       <GameOverDialog st={ [stage, setStage ]} sc={[score, setScore]} />
+      <div 
+        className='shim sidebar'
+      >
+      </div>
       <Grid st={st} nx={[next, setNext]} lv={[level, setLevel]} sc={[score, setScore]} />
       <div 
+        className='sidebar'
         style={{ 
-          display: stage === 'greeting' ? 'none' : 'flex',
-          flexDirection: 'column', 
-          alignItems: 'flex-start',
-          margin: '1em', 
-          position: 'absolute', 
-          right: '20em',
-          opacity: stage === 'game_over' ? 0.4 : ''
+          visibility: stage === 'greeting' ? 'hidden' : 'visible',
+          opacity: stage === 'game_over' ? 0.4 : '',
         }}>
         <NextQueue nextType={next} />
         <div className='hud-item' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center',  marginTop: '1em'}}>
-          <div style={{padding: '1em 1em 0.5em 1em', fontSize: '2rem'}}>{`${level}`.padStart(2, '0')}</div>
-          <div style={{fontSize: '1.25rem', padding: '0.5em'}}>Level</div>
+          <div style={{padding: '0.5em 1em 0em 1em', fontSize: '2rem'}}>{`${level}`.padStart(2, '0')}</div>
+          <div className='hud-label'>Level</div>
         </div>
         <div className='hud-item' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '1em'}}>
-          <div style={{padding: '1em 1em 0.5em 1em', fontSize: '1rem'}}>{score}</div>
-          <div style={{fontSize: '1.25rem', padding: '0.5em'}}>Score</div>
+          <div style={{padding: '1em 1em 0em 1em', fontSize: '1rem'}}>{score}</div>
+          <div className='hud-label'>Score</div>
         </div>
       </div>
-      
     </div>
   );
 }

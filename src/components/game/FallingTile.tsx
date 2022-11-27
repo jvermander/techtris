@@ -19,15 +19,15 @@ const FallingTile: React.FC<props> = ({ type, pos, level }) => {
 
     if(origin) {
       ref.current.style.transform = 
-        `translate(${(pos.x - origin.x) * 2.2}em, ${(pos.y - origin.y) * 1.9}em) translateZ(0)`;
+        `translate(calc(${pos.x - origin.x} * var(--tileWidth)), calc(${pos.y - origin.y} * var(--tileHeight))) translateZ(0)`;
       if(pos.y < 3) {
         ref.current.style.opacity = '0';
       } else {
         ref.current.style.opacity = '1';
       }
     } else {
-      ref.current.style.left = `${pos.x * 2.2}em`;
-      ref.current.style.top = `${(pos.y - 3) * 1.9}em`;
+      ref.current.style.left = `calc(${pos.x} * var(--tileWidth))`;
+      ref.current.style.top = `calc(${pos.y - 3} * var(--tileHeight))`;
       ref.current.style.display = 'flex';
       setOrigin(pos);
     }

@@ -43,7 +43,7 @@
 #tutorial {
   font-size: 1rem;
   position: absolute;
-  width: 90vw;
+  width: 100vw;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -56,8 +56,12 @@
   transition: opacity 2s ease-in-out;
 }
 
+.tutorial-p {
+  width: 80vw;
+}
+
 .tutorial-key {
-  font-size: 20px;
+  font-size: 1.25rem;
   color: white;
   border: 1px solid white;
   padding: 1em;
@@ -69,4 +73,39 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.mobile-btn {
+  display: none;
+  pointer-events: none;
+}
+
+@media screen and (max-width: 1000px) {
+  .tutorial-key {
+    font-size: 1rem;
+  }
+  .tutorial-p {
+    width: 90vw;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  #tutorial {
+    width: 100%;
+  }
+  .logo {
+    height: 1.5em;
+  }
+  .keyboard-btn {
+    display: none;
+  }
+  .mobile-btn {
+    display: flex;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .logo {
+    height: 14.5vw;
+  }
 }

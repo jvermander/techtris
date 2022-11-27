@@ -7,10 +7,17 @@ import './App.css'
 function App() {
   const [stage, setStage] = useState<GameStage>('greeting');
 
+
+
+  useEffect(() => {
+    document.documentElement.ontouchmove = (e) => { e.preventDefault() }
+    document.title = 'Techtris'
+  }, [])
+
   return (
     <>
-      <div id='bg'/>
       <div className='root'>
+        <div id='bg'/>
         <GreetingDialog st={[ stage, setStage ]} />
         <HUD st={[ stage, setStage ]} />
       </div>

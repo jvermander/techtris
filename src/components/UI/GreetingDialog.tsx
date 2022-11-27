@@ -14,39 +14,48 @@ const GreetingDialog: React.FC<props> = ({ st }) => {
 
   return (
     <div className={'greeting-ctn'} style={{ display: stage === 'greeting' ? 'flex' : 'none' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', transition: 'opacity 1s ease', opacity: tutorial ? '0' : '1', zIndex: 1, pointerEvents: tutorial ? 'none' : 'auto'}}>
+      <div 
+        style={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          transition: 'opacity 1s ease', 
+          opacity: tutorial ? '0' : '1', 
+          zIndex: 1, pointerEvents: 
+          tutorial ? 'none' : 'auto',
+        }}
+      >
         <img className='logo' src={logo} />
         <Button label='Let me play.' style={{ marginBottom: '0.5em', marginTop: '4em' }} onClick={(e) => setStage('setup')} />
-        <Button label={'How do I play?'} style={{ marginTop: '0.5em' }} 
+        <Button className='keyboard-btn'  label={'How do I play?'} style={{ marginTop: '0.5em' }} 
           onClick={(e) => {
             var board = document.getElementById('board');
             if(board) {
-                board.style.transform = 'scaleX(3.5)';
+                board.style.transform = 'scaleX(3.75)';
             }
             setTutorial(true);
           } } />
+        <Button className='mobile-btn'  label={'Mobile Support Coming Soon!'} style={{ marginTop: '0.5em' }} onClick={(e) => (e.preventDefault())} />
       </div>
       <div id='tutorial' style={{ visibility: tutorial ? 'visible' : 'hidden', opacity: tutorial ? '1' : '0', zIndex: 2 }} >
-        <div style={{ marginBottom: '3em' }}>
+        <div className='tutorial-p' style={{ marginBottom: '3em'}}>
           They say that <span style={{ color: 'purple' }}>Tetris</span> is elegant enough such that an extra-terrestrial could quickly learn all its rules without any instruction.
         </div>
-        <div style={{ marginBottom: '2em' }}>
+        <div className='tutorial-p' style={{ marginBottom: '2em' }}>
         For fun, let's pretend you are an alien who has stumbled upon a strange human game.
         Let's see if you can figure out the rules on your own.
         </div>
-        <br/>
-        <div>
+        <div className='tutorial-p'>
         We'll skip the tedious part and tell you the controls, though.
         </div>
-        <br/>
-        <div style={{display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'space-around', marginTop: '3em'}}>
-          <div style={{ display: 'flex', flexDirection: 'column', flexBasis: '33%', justifyContent: 'center', alignItems: 'center', marginRight: '5em'}}>
+        <div style={{display: 'flex', flexDirection: 'row', width: '80vw', justifyContent: 'center', marginTop: '3em'}}>
+          <div style={{ display: 'flex', flexDirection: 'column', flexBasis: '33%', justifyContent: 'center', alignItems: 'center', marginRight: '5vw'}}>
             <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: '1em'}}>
               <div className='tutorial-key' style={{margin: '1em 0.5em 1em 1em'}}>Z</div>
               <div className='tutorial-key' style={{margin: '1em 1em 1em 0.5em'}}>X</div>
               or
               <div className='tutorial-key' style={{margin: '1em 1em 1em 1em'}}>🠉</div>
-              
             </div>
             Rotate
           </div>
@@ -56,7 +65,7 @@ const GreetingDialog: React.FC<props> = ({ st }) => {
             </div>
             Drop
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', flexBasis: '33%', justifyContent: 'center', alignItems: 'center', marginLeft: '5em'}}>
+          <div style={{ display: 'flex', flexDirection: 'column', flexBasis: '33%', justifyContent: 'center', alignItems: 'center', marginLeft: '5vw'}}>
             <div style={{display: 'flex', flexDirection: 'row', marginBottom: '1em'}}>
               <div className='tutorial-key' style={{margin: '1em 0.5em 1em 1em'}}>🠈</div>
               <div className='tutorial-key' style={{margin: '1em 0.5em 1em 0.5em'}}>🠋</div>
