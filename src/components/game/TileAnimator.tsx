@@ -39,7 +39,7 @@ const TileAnimator: React.FC<props> = ({ type, magnitude }) => {
   useEffect(() => {
     if(!magnitude)
       return;
-
+    
     var delay = magnitude === 4 ? Tetris.TETRIS_DURATION : 0; 
     setTimeout(() => {
       allocate(!threadsRef.current[0] ? 0 : 1, type, magnitude);

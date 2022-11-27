@@ -3,6 +3,11 @@ import { FallingTile } from 'components';
 import { Tetris, roulette, gravityByLevel } from 'data/Tetris';
 import { TileType, Coordinate, GameStage } from 'data/types';
 import { isCollision, findYCollisionDist, getRotation, findYCollisions } from 'functional';
+import dropSfx from 'assets/sfx/drop.mp3';
+const dropAudio = new Audio();
+dropAudio.autoplay = true;
+dropAudio.src = ''
+
 
 type props = {
   gr: [
@@ -129,7 +134,6 @@ const FallingTetro: React.FC<props> = ({ gr, st, level, nx, destroyPending }) =>
         return false;
       i++;
     }
-
     setRotationIdx(newRotationIdx);
     setPosition(update);
     return true;
@@ -140,6 +144,7 @@ const FallingTetro: React.FC<props> = ({ gr, st, level, nx, destroyPending }) =>
     setWait(true);
     var update = fallDist ? onTranslate(0, fallDist, false) : position;
     updateGrid(update, type);
+    dropAudio.src = dropSfx;
   }
 
   useEffect(() => {
@@ -175,6 +180,7 @@ const FallingTetro: React.FC<props> = ({ gr, st, level, nx, destroyPending }) =>
         setTime(time + gravity);
       } else { // tetro hit the ground, spawn another
         console.log('Tetro hit the ground');
+        dropAudio.src = dropSfx;
         updateGrid(posRef.current, type);
         setWait(true);
       }

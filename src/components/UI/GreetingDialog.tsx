@@ -14,7 +14,7 @@ const GreetingDialog: React.FC<props> = ({ st }) => {
 
   return (
     <div className={'greeting-ctn'} style={{ display: stage === 'greeting' ? 'flex' : 'none' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', transition: 'opacity 1s ease', opacity: tutorial ? '0' : '1', zIndex: 1}}>
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', transition: 'opacity 1s ease', opacity: tutorial ? '0' : '1', zIndex: 1, pointerEvents: tutorial ? 'none' : 'auto'}}>
         <img className='logo' src={logo} />
         <Button label='Let me play.' style={{ marginBottom: '0.5em', marginTop: '4em' }} onClick={(e) => setStage('setup')} />
         <Button label={'How do I play?'} style={{ marginTop: '0.5em' }} 

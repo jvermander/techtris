@@ -1,5 +1,9 @@
 import React, { useState, useRef, useEffect, CSSProperties } from "react";
 import 'styles/Dialog.css';
+import hoverSfx from 'assets/sfx/button.mp3';
+const buttonAudio = new Audio();
+buttonAudio.autoplay = true;
+buttonAudio.src = '';
 
 type props = {
   label: string;
@@ -11,17 +15,11 @@ type props = {
 const Button: React.FC<props> = ({ label, style, onClick, className }) => {
 
   const onMouseEnter = (e: any) => {
-    e.target.style.transform = 'translate(5px, 5px)';
-    e.target.style.boxShadow = 'none';
-  }
-
-  const onMouseLeave = (e: any) => {
-    e.target.style.transform = 'translate(-5px, -5px)';
-    e.target.style.boxShadow = '';
+    buttonAudio.src = hoverSfx;
   }
 
   return (
-    <div className={`btn-ctn ${className}`} style={style} onClick={onClick}>
+    <div className={`btn-ctn ${className}`} style={style} onMouseEnter={onMouseEnter} onClick={onClick}>
       {label}
     </div>
   );

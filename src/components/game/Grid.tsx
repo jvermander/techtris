@@ -4,6 +4,26 @@ import { TileType, Coordinate, GameStage } from 'data/types';
 import { findCompleteRows, findYCollisions } from 'functional';
 import { Tile, FallingTetro } from 'components';
 import 'styles/HUD.css';
+import destroySfx from 'assets/sfx/destroycropped.mp3';
+import tetrisDestroySfx from 'assets/sfx/tetrisdestroy.mp3';
+import tetrisSfx from 'assets/sfx/tetris.mp3';
+import levelUpSfx from 'assets/sfx/levelup.mp3';
+import endSfx from 'assets/sfx/realend.mp3';
+import startSfx from 'assets/sfx/end.mp3';
+import encourageSfx from 'assets/sfx/encourage.mp3';
+import mysterySfx from 'assets/sfx/mystery.mp3';
+const miscAudio = new Audio();
+const destroyAudio = new Audio();
+const tetrisAudio = new Audio();
+const levelUpAudio = new Audio();
+miscAudio.autoplay = true;
+destroyAudio.autoplay = true;
+tetrisAudio.autoplay = true;
+levelUpAudio.autoplay = true;
+miscAudio.src = '';
+destroyAudio.src = '';
+tetrisAudio.src = '';
+levelUpAudio.src = '';
 
 type props = {
   st: [ stage: GameStage, setStage: React.Dispatch<React.SetStateAction<GameStage>> ],
@@ -61,6 +81,13 @@ const Grid: React.FC<props> = ({ st, nx, lv, sc }) => {
     var complete = findCompleteRows(grid, position);
     var additionalScore = 0;
     if(complete.length > 0) {
+      if(complete.length === 4) {
+        tetrisAudio.src = tetrisSfx;
+        destroyAudio.src = tetrisDestroySfx;
+        miscAudio.src = encourageSfx;
+      } else {
+        destroyAudio.src = destroySfx;
+      }
       var updateMag = [...magnitude];
       for(const i of complete) {
         for(var j = 0; j < Tetris.COLS; j++ ) {
@@ -100,18 +127,27 @@ const Grid: React.FC<props> = ({ st, nx, lv, sc }) => {
 
   useEffect(() => {
     console.log()
-    if((level <= 10 && linesCleared >= Math.max((level-1) * 10 + 10, 10)) || (level > 10 && linesCleared >= (2 * level - 9) * 10))
+    if((level <= 10 && linesCleared >= (level + 1) * 10) || 
+       (level > 10 && linesCleared >= (2 * level - 9) * 10)) {
+      levelUpAudio.src = levelUpSfx;
       setLevel(prev => prev + 1);
+    }
     console.log('Lines cleared', linesCleared);
   }, [linesCleared])
 
   const resetGame = () => {
     setGrid(initGrid());
+    setLinesCleared(0);
   }
 
   const newGame = () => {
     setStage('play');
   }
+
+  useEffect(() => {
+    if(toDestroy.length > 0) {
+    }
+  }, [toDestroy])
 
   useEffect(() => {
     if(!level)
@@ -125,8 +161,15 @@ const Grid: React.FC<props> = ({ st, nx, lv, sc }) => {
     console.log('Game stage:', stage);
     if(stage === 'setup')
       resetGame();
-    else if(stage === 'play')
+    else if(stage === 'play') {
+      if(level === 0)
+        miscAudio.src = mysterySfx;
+      else
+        miscAudio.src = startSfx;
       newGame();
+    }
+    else if(stage === 'game_over')
+      miscAudio.src = endSfx;
   }, [stage])
 
   useEffect(() => {
