@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/techtris/static/css/main.a36b4428.css",
-    "main.js": "/techtris/static/js/main.f22592ac.js",
+    "main.js": "/techtris/static/js/main.6981fbfd.js",
     "static/media/seamless_p4.webp": "/techtris/static/media/seamless_p4.b3568aec935bffa757a4.webp",
     "static/media/encourage.mp3": "/techtris/static/media/encourage.55a961b68f2079f8f405.mp3",
     "static/media/levelup.mp3": "/techtris/static/media/levelup.2cce40649fb571be8dff.mp3",
@@ -18,10 +18,10 @@
     "static/media/Sharpin.otf": "/techtris/static/media/Sharpin.e5d803e8e05bb5c9bf31.otf",
     "index.html": "/techtris/index.html",
     "main.a36b4428.css.map": "/techtris/static/css/main.a36b4428.css.map",
-    "main.f22592ac.js.map": "/techtris/static/js/main.f22592ac.js.map"
+    "main.6981fbfd.js.map": "/techtris/static/js/main.6981fbfd.js.map"
   },
   "entrypoints": [
     "static/css/main.a36b4428.css",
-    "static/js/main.f22592ac.js"
+    "static/js/main.6981fbfd.js"
   ]
 }
