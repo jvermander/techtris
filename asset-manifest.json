@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/techtris/static/css/main.a36b4428.css",
+    "main.js": "/techtris/static/js/main.f22592ac.js",
+    "static/media/seamless_p4.webp": "/techtris/static/media/seamless_p4.b3568aec935bffa757a4.webp",
+    "static/media/encourage.mp3": "/techtris/static/media/encourage.55a961b68f2079f8f405.mp3",
+    "static/media/levelup.mp3": "/techtris/static/media/levelup.2cce40649fb571be8dff.mp3",
+    "static/media/realend.mp3": "/techtris/static/media/realend.95e090246e93b388b267.mp3",
+    "static/media/mystery.mp3": "/techtris/static/media/mystery.bd9423cf991b251a189d.mp3",
+    "static/media/logoclean.png": "/techtris/static/media/logoclean.ffa11d430bffb3f436b2.png",
+    "static/media/tetris.mp3": "/techtris/static/media/tetris.2054a4f7fc279fdada55.mp3",
+    "static/media/destroycropped.mp3": "/techtris/static/media/destroycropped.3e8bed6486e5771b7a4d.mp3",
+    "static/media/tetrisdestroy.mp3": "/techtris/static/media/tetrisdestroy.4f4af00f64a2cce85bc7.mp3",
+    "static/media/drop.mp3": "/techtris/static/media/drop.216372d6e19c6ebc7ded.mp3",
+    "static/media/react.png": "/techtris/static/media/react.20adfb35ae6a6e5817bf.png",
+    "static/media/end.mp3": "/techtris/static/media/end.d520335a4cbc11dd5309.mp3",
+    "static/media/button.mp3": "/techtris/static/media/button.0c635ad32f86eca21e39.mp3",
+    "static/media/Sharpin.otf": "/techtris/static/media/Sharpin.e5d803e8e05bb5c9bf31.otf",
+    "index.html": "/techtris/index.html",
+    "main.a36b4428.css.map": "/techtris/static/css/main.a36b4428.css.map",
+    "main.f22592ac.js.map": "/techtris/static/js/main.f22592ac.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a36b4428.css",
+    "static/js/main.f22592ac.js"
+  ]
+}
