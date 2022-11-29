@@ -10,6 +10,7 @@ import QueuedTile from './UI/QueuedTile';
 import GreetingDialog from './UI/GreetingDialog';
 import GameOverDialog from './UI/GameOverDialog';
 import LevelSelector from './UI/LevelSelector';
+import MusicPlayer from "./UI/MusicPlayer";
 import Modal from "./UI/Modal";
 import Button from "./UI/Button";
 
@@ -26,6 +27,7 @@ export {
   GreetingDialog,
   GameOverDialog,
   LevelSelector,
+  MusicPlayer,
   Modal,
   Button,
 };

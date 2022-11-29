@@ -11,7 +11,6 @@ import levelUpSfx from 'assets/sfx/levelup.mp3';
 import endSfx from 'assets/sfx/realend.mp3';
 import startSfx from 'assets/sfx/end.mp3';
 import encourageSfx from 'assets/sfx/encourage.mp3';
-import mysterySfx from 'assets/sfx/mystery.mp3';
 const miscAudio = new Audio();
 const destroyAudio = new Audio();
 const tetrisAudio = new Audio();
@@ -162,10 +161,7 @@ const Grid: React.FC<props> = ({ st, nx, lv, sc }) => {
     if(stage === 'setup')
       resetGame();
     else if(stage === 'play') {
-      if(level === 0)
-        miscAudio.src = mysterySfx;
-      else
-        miscAudio.src = startSfx;
+      miscAudio.src = startSfx;
       newGame();
     }
     else if(stage === 'game_over')

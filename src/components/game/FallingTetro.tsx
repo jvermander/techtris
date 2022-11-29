@@ -3,11 +3,11 @@ import { FallingTile } from 'components';
 import { Tetris, roulette, gravityByLevel } from 'data/Tetris';
 import { TileType, Coordinate, GameStage } from 'data/types';
 import { isCollision, findYCollisionDist, getRotation, findYCollisions } from 'functional';
-import dropSfx from 'assets/sfx/drop.mp3';
+import dropSfx from 'assets/sfx/droploud.mp3';
 const dropAudio = new Audio();
 dropAudio.autoplay = true;
 dropAudio.src = ''
-
+dropAudio.volume = 1;
 
 type props = {
   gr: [
