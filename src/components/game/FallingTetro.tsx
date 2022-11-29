@@ -7,7 +7,7 @@ import dropSfx from 'assets/sfx/drop.mp3';
 const dropAudio = new Audio();
 dropAudio.autoplay = true;
 dropAudio.src = ''
-
+dropAudio.volume = 1;
 
 type props = {
   gr: [

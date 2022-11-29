@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button } from 'components';
 import { GameStage } from 'data/types';
+import { AudioContext } from 'contexts';
 import 'styles/Dialog.css';
 import logo from 'assets/images/logoclean.png';
 
@@ -11,6 +12,7 @@ type props = {
 const GreetingDialog: React.FC<props> = ({ st }) => {
   const [stage, setStage] = st;
   const [tutorial, setTutorial] = useState<boolean>(false);
+  const [playAudio, isPermitted, setIsPermitted] = useContext(AudioContext);
 
   return (
     <div className={'greeting-ctn'} style={{ display: stage === 'greeting' ? 'flex' : 'none' }}>
@@ -27,7 +29,8 @@ const GreetingDialog: React.FC<props> = ({ st }) => {
         }}
       >
         <img className='logo' src={logo} />
-        <Button label='Let me play.' style={{ marginBottom: '0.5em', marginTop: '4em' }} onClick={(e) => setStage('setup')} />
+        <Button label='Let me play.' style={{ marginBottom: '0.5em', marginTop: '4em' }} 
+          onClick={(e) => { setStage('setup'); setIsPermitted(true); }}/>
         <Button className='keyboard-btn'  label={'How do I play?'} style={{ marginTop: '0.5em' }} 
           onClick={(e) => {
             var board = document.getElementById('board');
@@ -35,6 +38,7 @@ const GreetingDialog: React.FC<props> = ({ st }) => {
                 board.style.transform = 'scaleX(3.75)';
             }
             setTutorial(true);
+            setIsPermitted(true);
           } } />
         <Button className='mobile-btn'  label={'Mobile Support Coming Soon!'} style={{ marginTop: '0.5em' }} onClick={(e) => (e.preventDefault())} />
       </div>
