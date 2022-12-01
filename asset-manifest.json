@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.2f8fb0f3.css",
-    "main.js": "/static/js/main.a73ab967.js",
+    "main.css": "/static/css/main.f8577d8f.css",
+    "main.js": "/static/js/main.3272e43c.js",
     "static/media/moon.mp3": "/static/media/moon.5ad4312f4489fd9bb542.mp3",
     "static/media/floating.mp3": "/static/media/floating.b9f0751d9b0d093c4994.mp3",
     "static/media/calypso.mp3": "/static/media/calypso.4732821b6a084405f6c1.mp3",
@@ -14,12 +14,12 @@
     "static/media/encourage.mp3": "/static/media/encourage.55a961b68f2079f8f405.mp3",
     "static/media/levelup.mp3": "/static/media/levelup.2cce40649fb571be8dff.mp3",
     "static/media/realend.mp3": "/static/media/realend.95e090246e93b388b267.mp3",
-    "static/media/mystery.mp3": "/static/media/mystery.bd9423cf991b251a189d.mp3",
     "static/media/logoclean.png": "/static/media/logoclean.ffa11d430bffb3f436b2.png",
     "static/media/tetris.mp3": "/static/media/tetris.2054a4f7fc279fdada55.mp3",
     "static/media/destroycropped.mp3": "/static/media/destroycropped.3e8bed6486e5771b7a4d.mp3",
     "static/media/tetrisdestroy.mp3": "/static/media/tetrisdestroy.4f4af00f64a2cce85bc7.mp3",
-    "static/media/drop.mp3": "/static/media/drop.216372d6e19c6ebc7ded.mp3",
+    "static/media/droploud.mp3": "/static/media/droploud.d2ab958241a9c40765a7.mp3",
+    "static/media/react.png": "/static/media/react.20adfb35ae6a6e5817bf.png",
     "static/media/end.mp3": "/static/media/end.d520335a4cbc11dd5309.mp3",
     "static/media/button.mp3": "/static/media/button.0c635ad32f86eca21e39.mp3",
     "static/media/Sharpin.otf": "/static/media/Sharpin.e5d803e8e05bb5c9bf31.otf",
@@ -28,11 +28,11 @@
     "static/media/play.svg": "/static/media/play.faa9379ec476becdb4e4e754138d8663.svg",
     "index.html": "/index.html",
     "static/media/pause.svg": "/static/media/pause.12888f6474e6f123d1ea5d08ef88d3bb.svg",
-    "main.2f8fb0f3.css.map": "/static/css/main.2f8fb0f3.css.map",
-    "main.a73ab967.js.map": "/static/js/main.a73ab967.js.map"
+    "main.f8577d8f.css.map": "/static/css/main.f8577d8f.css.map",
+    "main.3272e43c.js.map": "/static/js/main.3272e43c.js.map"
   },
   "entrypoints": [
-    "static/css/main.2f8fb0f3.css",
-    "static/js/main.a73ab967.js"
+    "static/css/main.f8577d8f.css",
+    "static/js/main.3272e43c.js"
   ]
 }
