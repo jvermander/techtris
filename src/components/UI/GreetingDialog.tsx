@@ -44,14 +44,16 @@ const GreetingDialog: React.FC<props> = ({ st }) => {
       </div>
       <div id='tutorial' style={{ visibility: tutorial ? 'visible' : 'hidden', opacity: tutorial ? '1' : '0', zIndex: 2 }} >
         <div className='tutorial-p' style={{ marginBottom: '3em'}}>
-          They say that <span style={{ color: 'purple' }}>Tetris</span> is elegant enough such that an extra-terrestrial could quickly learn all its rules without any instruction.
+          They say that <span style={{ color: 'purple' }}>Tetris</span> is so elegant that an alien could quickly learn it without any instruction.
         </div>
-        <div className='tutorial-p' style={{ marginBottom: '2em' }}>
-        For fun, let's pretend you are an alien who has stumbled upon a strange human game.
-        Let's see if you can figure out the rules on your own.
+        <div className='tutorial-p' style={{ marginBottom: '1em' }}>
+          For fun, let's pretend you are an alien who has stumbled upon a strange human game.
+        </div>
+        <div className='tutorial-p' style={{ marginBottom: '3em' }}>
+          Let's see if you can figure out its rules on your own.
         </div>
         <div className='tutorial-p'>
-        We'll skip the tedious part and tell you the controls, though.
+          We'll skip the tedious part and tell you the controls, though.
         </div>
         <div style={{display: 'flex', flexDirection: 'row', width: '80vw', justifyContent: 'center', marginTop: '3em'}}>
           <div style={{ display: 'flex', flexDirection: 'column', flexBasis: '33%', justifyContent: 'center', alignItems: 'center', marginRight: '5vw'}}>
